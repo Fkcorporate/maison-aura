@@ -14,7 +14,6 @@
     <meta property="og:title" content="AURA · Parfums d'exception">
     <meta property="og:description" content="Maison de parfumerie française depuis 1925">
     <meta property="og:image" content="/static/og-image.jpg">
-    <meta property="og:url" content="https://www.aura-parfums.fr">
     
     <!-- Fonts luxe -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -913,7 +912,80 @@
             color: #666;
         }
 
-        /* Toast notification */
+        /* ===== SECTION HISTOIRE ===== */
+        .histoire-section {
+            margin: 3rem 0;
+            background: var(--blanc-casse);
+            padding: 2.5rem;
+            border-radius: 2px;
+        }
+
+        .histoire-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .histoire-content .section-subtitle {
+            text-align: left;
+        }
+
+        .histoire-content h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin: 1rem 0;
+            line-height: 1.2;
+        }
+
+        .histoire-content p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .histoire-link {
+            color: var(--or-fonce);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--or);
+            padding-bottom: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-luxe);
+        }
+
+        .histoire-link:hover {
+            color: var(--noir-profond);
+            border-bottom-color: var(--noir-profond);
+            gap: 0.8rem;
+        }
+
+        .histoire-images {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .histoire-images img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 2px;
+            box-shadow: var(--ombre-subtile);
+            transition: var(--transition-luxe);
+        }
+
+        .histoire-images img:hover {
+            transform: scale(1.02);
+            box-shadow: var(--ombre-luxe);
+        }
+
+        /* ===== TOAST NOTIFICATION ===== */
         .toast-notification {
             position: fixed;
             bottom: 20px;
@@ -1202,7 +1274,7 @@
             color: #666;
         }
 
-        /* ===== MEDIA QUERIES POUR MOBILE ULTRA PROPRE ===== */
+        /* ===== MEDIA QUERIES POUR MOBILE ===== */
         @media (max-width: 1024px) {
             .container {
                 padding: 0 1.5rem;
@@ -1210,6 +1282,14 @@
             
             .footer-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .histoire-grid {
+                gap: 2rem;
+            }
+            
+            .histoire-content h2 {
+                font-size: 2.2rem;
             }
         }
 
@@ -1297,6 +1377,19 @@
 
             .product-price .current-price {
                 font-size: 1rem;
+            }
+
+            .histoire-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .histoire-images {
+                order: -1;
+            }
+            
+            .histoire-images img {
+                height: 200px;
             }
 
             .footer-grid {
@@ -1418,6 +1511,22 @@
             .mobile-menu a {
                 font-size: 1.5rem;
                 padding: 0.6rem 0;
+            }
+            
+            .histoire-section {
+                padding: 1.5rem;
+            }
+            
+            .histoire-content h2 {
+                font-size: 2rem;
+            }
+            
+            .histoire-images {
+                grid-template-columns: 1fr;
+            }
+            
+            .histoire-images img {
+                height: 180px;
             }
         }
 
@@ -1647,18 +1756,25 @@
                 </div>
                 {% endfor %}
             </div>
+        </section>
 
-            <!-- Boutons d'action -->
-            <div class="text-center">
-                <a href="https://wa.me/33752771701?text=Bonjour%20Aura%2C%20je%20souhaite%20des%20informations" 
-                   class="btn-wa" target="_blank">
-                   <i class="fab fa-whatsapp"></i> Commander
-                </a>
-                <div class="mt-2">
-                    <a href="/panier" style="color: var(--or-fonce); text-decoration: none; font-size: 0.8rem;">
-                        <i class="fas fa-shopping-bag"></i> Mon panier
-                        {% if cart_count > 0 %}({{ cart_count }}){% endif %}
+        <!-- SECTION HISTOIRE (AJOUTÉE) -->
+        <section class="container histoire-section" data-aos="fade-up">
+            <div class="histoire-grid">
+                <div class="histoire-content">
+                    <div class="section-subtitle">NOTRE HISTOIRE</div>
+                    <h2>Un siècle<br>d'excellence</h2>
+                    <p>
+                        Fondée en 1925 par Philippe Delacroix, la maison AURA perpétue un savoir-faire artisanal unique, 
+                        alliant les techniques ancestrales de la parfumerie de Grasse aux innovations les plus modernes.
+                    </p>
+                    <a href="/histoire" class="histoire-link">
+                        Découvrir notre héritage <i class="fas fa-arrow-right"></i>
                     </a>
+                </div>
+                <div class="histoire-images">
+                    <img src="/static/slide2.jpg" alt="Atelier de parfumerie">
+                    <img src="/static/slide1.jpg" alt="Flacon AURA">
                 </div>
             </div>
         </section>
@@ -1702,6 +1818,20 @@
                 </form>
             </div>
         </section>
+
+        <!-- Boutons d'action -->
+        <div class="text-center" style="margin-bottom: 2rem;">
+            <a href="https://wa.me/33752771701?text=Bonjour%20Aura%2C%20je%20souhaite%20des%20informations" 
+               class="btn-wa" target="_blank">
+               <i class="fab fa-whatsapp"></i> Commander
+            </a>
+            <div class="mt-2">
+                <a href="/panier" style="color: var(--or-fonce); text-decoration: none; font-size: 0.8rem;">
+                    <i class="fas fa-shopping-bag"></i> Mon panier
+                    {% if cart_count > 0 %}({{ cart_count }}){% endif %}
+                </a>
+            </div>
+        </div>
     </main>
 
     <!-- FOOTER -->
@@ -1801,7 +1931,7 @@
             closePromo();
         };
 
-        // ===== MENU MOBILE ULTRA PROPRE =====
+        // ===== MENU MOBILE =====
         window.toggleMenu = function() {
             const menu = document.getElementById('mobileMenu');
             const toggle = document.getElementById('menuToggle');
