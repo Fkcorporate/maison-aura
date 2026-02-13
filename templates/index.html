@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>AURA · Parfums d'exception | Maison de parfumerie française depuis 1925</title>
     
     <!-- SEO & Métadonnées -->
@@ -13,6 +13,7 @@
     <meta property="og:description" content="Maison de parfumerie française depuis 1925">
     <meta property="og:image" content="/static/og-image.jpg">
     <meta property="og:url" content="https://www.aura-parfums.fr">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Fonts luxe -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,13 +70,7 @@
             padding: 0 4rem;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 2rem;
-            }
-        }
-
-        /* ===== POPUP PROMOTION ===== */
+        /* ===== POPUP PROMOTION RESPONSIVE ===== */
         .promo-popup {
             position: fixed;
             top: 0;
@@ -84,6 +79,7 @@
             height: 100%;
             background: rgba(0,0,0,0.7);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -91,6 +87,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.5s ease;
+            padding: 1rem;
         }
 
         .promo-popup.active {
@@ -100,14 +97,17 @@
 
         .popup-content {
             background: linear-gradient(145deg, #fffcf8 0%, #f5f0e9 100%);
-            max-width: 600px;
-            width: 90%;
-            padding: 4rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2.5rem;
             position: relative;
             box-shadow: var(--ombre-luxe);
             border: 1px solid var(--or-clair);
             transform: translateY(30px);
             transition: all 0.6s ease;
+            border-radius: 8px;
         }
 
         .promo-popup.active .popup-content {
@@ -116,20 +116,21 @@
 
         .popup-close {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.05);
             border: none;
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: var(--noir-doux);
             cursor: pointer;
             transition: var(--transition-luxe);
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            z-index: 10;
         }
 
         .popup-close:hover {
@@ -138,18 +139,18 @@
         }
 
         .popup-tag {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 3px;
             color: var(--or-fonce);
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
 
         .popup-content h2 {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             font-weight: 300;
             line-height: 1.2;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             color: var(--noir-profond);
         }
 
@@ -159,30 +160,41 @@
         }
 
         .popup-content p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
             color: var(--noir-doux);
         }
 
         .promo-code {
             background: var(--noir-profond);
             color: var(--or);
-            padding: 1.5rem;
+            padding: 1.2rem;
             text-align: center;
-            margin: 2rem 0;
-            font-size: 2rem;
+            margin: 1.5rem 0;
+            font-size: 1.8rem;
             font-family: 'Cormorant Garamond', serif;
-            letter-spacing: 8px;
+            letter-spacing: 6px;
             border: 1px solid var(--or);
-            box-shadow: inset 0 0 20px rgba(197,162,103,0.2);
+            box-shadow: inset 0 0 15px rgba(197,162,103,0.2);
+            border-radius: 4px;
+            word-break: break-word;
         }
 
         .popup-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #666;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .popup-footer span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
         }
 
         /* ===== TOP BAR ===== */
@@ -209,6 +221,7 @@
             z-index: 90;
             background: rgba(252,250,247,0.92);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(197,162,103,0.2);
             padding: 0.8rem 0;
         }
@@ -227,8 +240,8 @@
 
         .logo-maison {
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
-            letter-spacing: 6px;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--or-fonce);
             margin-bottom: 2px;
@@ -237,9 +250,9 @@
 
         .logo {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 400;
-            letter-spacing: 8px;
+            letter-spacing: 6px;
             text-transform: uppercase;
             color: var(--noir-profond);
             line-height: 1;
@@ -249,12 +262,12 @@
             font-weight: 700;
             font-style: italic;
             color: var(--or-fonce);
-            font-size: 3rem;
+            font-size: 2.5rem;
         }
 
         .logo-since {
-            font-size: 0.7rem;
-            letter-spacing: 3px;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
             color: var(--or-fonce);
             text-transform: uppercase;
             margin-top: -5px;
@@ -262,14 +275,14 @@
 
         .nav-links {
             display: flex;
-            gap: 3rem;
+            gap: 2rem;
         }
 
         .nav-links a {
             text-decoration: none;
             color: var(--noir-doux);
-            font-size: 0.9rem;
-            letter-spacing: 2px;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             font-weight: 400;
             transition: var(--transition-luxe);
@@ -298,8 +311,8 @@
 
         .header-icons {
             display: flex;
-            gap: 1.5rem;
-            font-size: 1.2rem;
+            gap: 1.2rem;
+            font-size: 1.1rem;
             color: var(--noir-doux);
             align-items: center;
         }
@@ -338,20 +351,14 @@
         }
 
         @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
-        /* ===== HERO SLIDER OPTIMISÉ SANS ZOOM ===== */
+        /* ===== HERO SLIDER ===== */
         .hero {
-            margin: 2rem 0 4rem;
+            margin: 1rem 0 3rem;
             position: relative;
             width: 100%;
             overflow: hidden;
@@ -360,8 +367,8 @@
         .slider {
             position: relative;
             width: 100%;
-            height: 85vh;
-            min-height: 700px;
+            height: 70vh;
+            min-height: 500px;
             overflow: hidden;
             border-radius: 2px;
             box-shadow: var(--ombre-luxe);
@@ -409,12 +416,12 @@
 
         .slide-content {
             position: absolute;
-            bottom: 15%;
+            bottom: 10%;
             left: 5%;
             z-index: 20;
             color: white;
-            max-width: 700px;
-            padding: 2rem;
+            max-width: 600px;
+            padding: 1.5rem;
             text-shadow: 0 2px 10px rgba(0,0,0,0.3);
             animation: slideUp 1s ease-out;
         }
@@ -422,7 +429,7 @@
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -431,30 +438,30 @@
         }
 
         .slide-content h2 {
-            font-size: 5rem;
+            font-size: 3.5rem;
             font-weight: 300;
             line-height: 1.1;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             font-family: 'Cormorant Garamond', serif;
         }
 
         .slide-content p {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 300;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             opacity: 0.9;
-            max-width: 600px;
+            max-width: 500px;
         }
 
         .slide-btn {
             display: inline-block;
-            padding: 1rem 3rem;
+            padding: 0.8rem 2rem;
             border: 1px solid white;
             color: white;
             text-decoration: none;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             transition: var(--transition-luxe);
             background: transparent;
             position: relative;
@@ -483,21 +490,22 @@
 
         .slider-controls {
             position: absolute;
-            bottom: 40px;
-            right: 40px;
+            bottom: 20px;
+            right: 20px;
             z-index: 40;
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         .slider-btn {
             background: rgba(255,255,255,0.15);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            width: 55px;
-            height: 55px;
-            font-size: 1.4rem;
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -514,16 +522,16 @@
 
         .dots {
             position: absolute;
-            bottom: 55px;
-            left: 40px;
+            bottom: 35px;
+            left: 20px;
             z-index: 40;
             display: flex;
-            gap: 15px;
+            gap: 10px;
         }
 
         .dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: rgba(255,255,255,0.4);
             border: 1px solid transparent;
@@ -533,27 +541,27 @@
 
         .dot.active-dot {
             background: white;
-            transform: scale(1.3);
+            transform: scale(1.2);
             border-color: var(--or);
-            box-shadow: 0 0 15px var(--or);
+            box-shadow: 0 0 10px var(--or);
         }
 
         /* ===== SECTION COLLECTION ===== */
         .section-header {
             text-align: center;
-            margin: 5rem 0 3rem;
+            margin: 3rem 0 2rem;
         }
 
         .section-subtitle {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 5px;
+            letter-spacing: 4px;
             color: var(--or-fonce);
             margin-bottom: 0.5rem;
         }
 
         .section-title {
-            font-size: 3.5rem;
+            font-size: 2.8rem;
             font-weight: 300;
             color: var(--noir-profond);
             margin-bottom: 1rem;
@@ -561,22 +569,23 @@
 
         .section-title span {
             border-bottom: 2px solid var(--or);
-            padding-bottom: 8px;
+            padding-bottom: 6px;
         }
 
         .section-description {
-            max-width: 700px;
+            max-width: 600px;
             margin: 0 auto;
             color: #666;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            padding: 0 1rem;
         }
 
         /* Grille produits luxe */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 4rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
         }
 
         .product-card {
@@ -589,22 +598,23 @@
         }
 
         .product-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             box-shadow: var(--ombre-luxe);
         }
 
         .product-badges {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 15px;
+            left: 15px;
             z-index: 10;
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .badge {
-            padding: 0.5rem 1rem;
-            font-size: 0.7rem;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 500;
@@ -627,7 +637,7 @@
         }
 
         .product-image {
-            height: 400px;
+            height: 350px;
             overflow: hidden;
             position: relative;
         }
@@ -649,12 +659,12 @@
             left: 0;
             right: 0;
             background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            padding: 2rem 1.5rem 1.5rem;
+            padding: 1.5rem 1rem 1rem;
             transform: translateY(100%);
             transition: var(--transition-luxe);
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
+            gap: 0.5rem;
         }
 
         .product-card:hover .product-actions {
@@ -663,13 +673,13 @@
 
         .btn-product-action {
             width: 100%;
-            padding: 1rem;
+            padding: 0.8rem;
             background: white;
             color: var(--noir-profond);
             text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            font-size: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -694,20 +704,20 @@
         }
 
         .product-info {
-            padding: 2rem 1.5rem;
+            padding: 1.5rem;
             background: white;
         }
 
         .product-category {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             color: var(--or-fonce);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
 
         .product-info h3 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 400;
             margin-bottom: 0.5rem;
         }
@@ -715,18 +725,18 @@
         .product-price {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin: 1rem 0;
+            gap: 0.8rem;
+            margin: 0.8rem 0;
         }
 
         .current-price {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-family: 'Cormorant Garamond', serif;
             color: var(--noir-profond);
         }
 
         .old-price {
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-decoration: line-through;
             color: #999;
         }
@@ -736,34 +746,39 @@
             align-items: center;
             gap: 0.5rem;
             color: var(--or);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            flex-wrap: wrap;
         }
 
         .product-rating span {
             color: #666;
         }
 
-        /* Notification toast */
+        /* Toast notification */
         .toast-notification {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
             background: var(--noir-profond);
             color: white;
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
             border-radius: 50px;
             box-shadow: var(--ombre-luxe);
             z-index: 1000;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 1rem;
-            transform: translateX(400px);
+            transform: translateY(200%);
             transition: transform 0.3s ease;
             border-left: 4px solid var(--or);
+            max-width: 400px;
+            margin: 0 auto;
         }
 
         .toast-notification.show {
-            transform: translateX(0);
+            transform: translateY(0);
         }
 
         .toast-notification i {
@@ -774,8 +789,15 @@
         .toast-notification a {
             color: var(--or);
             text-decoration: none;
-            margin-left: 0.5rem;
             font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex: 1;
         }
 
         /* ===== BOUTON WHATSAPP ===== */
@@ -783,12 +805,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 1rem;
+            gap: 0.8rem;
             background: #25D366;
             color: white;
             text-decoration: none;
-            padding: 1.2rem 3rem;
-            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
             font-weight: 500;
             letter-spacing: 1.5px;
             text-transform: uppercase;
@@ -796,90 +818,93 @@
             border-radius: 50px;
             box-shadow: 0 8px 16px -6px rgba(37, 211, 102, 0.4);
             transition: var(--transition-luxe);
-            margin: 2rem auto;
+            margin: 1.5rem auto;
+            width: fit-content;
         }
 
         .btn-wa i {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
         }
 
         .btn-wa:hover {
             background: #20b859;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: 0 15px 25px -8px rgba(37, 211, 102, 0.6);
         }
 
         /* ===== SECTION AVANTAGES ===== */
         .advantages {
             background: var(--blanc-casse);
-            padding: 4rem 0;
-            margin: 5rem 0;
+            padding: 3rem 0;
+            margin: 3rem 0;
             border-top: 1px solid var(--or-clair);
             border-bottom: 1px solid var(--or-clair);
         }
 
         .advantages-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
             text-align: center;
         }
 
         .advantage-item i {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: var(--or-fonce);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .advantage-item h4 {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             margin-bottom: 0.5rem;
         }
 
         .advantage-item p {
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        /* ===== NEWSLETTER ===== */
+        /* ===== NEWSLETTER RESPONSIVE ===== */
         .newsletter {
             background: linear-gradient(145deg, var(--noir-profond) 0%, #2b2b2b 100%);
             color: white;
-            padding: 5rem 0;
-            margin: 5rem 0;
+            padding: 3rem 0;
+            margin: 3rem 0;
             text-align: center;
         }
 
         .newsletter-content {
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
+            padding: 0 1rem;
         }
 
         .newsletter h3 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 300;
             margin-bottom: 1rem;
         }
 
         .newsletter p {
             color: var(--or-clair);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
         }
 
         .newsletter-form {
             display: flex;
             gap: 0.5rem;
-            max-width: 500px;
+            max-width: 450px;
             margin: 0 auto;
         }
 
         .newsletter-form input {
             flex: 1;
-            padding: 1.2rem;
+            padding: 1rem;
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(197,162,103,0.3);
             color: white;
-            font-size: 1rem;
+            font-size: 0.95rem;
             border-radius: 0;
         }
 
@@ -888,15 +913,17 @@
         }
 
         .newsletter-form button {
-            padding: 1.2rem 2.5rem;
+            padding: 1rem 1.5rem;
             background: var(--or);
             border: none;
             color: var(--noir-profond);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             cursor: pointer;
             transition: var(--transition-luxe);
             font-weight: 500;
+            white-space: nowrap;
+            font-size: 0.9rem;
         }
 
         .newsletter-form button:hover {
@@ -908,21 +935,21 @@
         footer {
             background: var(--noir-profond);
             color: var(--beige);
-            padding: 4rem 0 2rem;
+            padding: 3rem 0 1.5rem;
         }
 
         .footer-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1.5fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
         .footer-logo {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            letter-spacing: 4px;
-            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 0.8rem;
         }
 
         .footer-logo span {
@@ -931,18 +958,18 @@
 
         .footer-about p {
             color: #999;
-            margin: 1.5rem 0;
-            font-size: 0.9rem;
+            margin: 1rem 0;
+            font-size: 0.85rem;
         }
 
         .social-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         .social-links a {
             color: var(--or-clair);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: var(--transition-luxe);
         }
 
@@ -952,8 +979,8 @@
         }
 
         .footer-column h4 {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
             color: var(--or);
         }
 
@@ -962,14 +989,14 @@
         }
 
         .footer-column ul li {
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
         }
 
         .footer-column ul li a {
             color: #999;
             text-decoration: none;
             transition: var(--transition-luxe);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .footer-column ul li a:hover {
@@ -980,41 +1007,44 @@
         .footer-contact p {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
             color: #999;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.85rem;
         }
 
         .footer-contact i {
             color: var(--or);
-            width: 20px;
+            width: 18px;
         }
 
         .footer-bottom {
             border-top: 1px solid #333;
-            padding-top: 2rem;
+            padding-top: 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             color: #666;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .payment-methods {
             display: flex;
             gap: 1rem;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: #666;
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1200px) {
-            .footer-grid {
-                grid-template-columns: repeat(2, 1fr);
+        /* ===== MEDIA QUERIES POUR MOBILE ===== */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 3rem;
             }
-            .slide-content h2 {
-                font-size: 4rem;
+            
+            .nav-links {
+                gap: 1.5rem;
             }
         }
 
@@ -1022,28 +1052,236 @@
             .container {
                 padding: 0 1.5rem;
             }
+            
             .nav-links {
                 display: none;
             }
-            .slide-content h2 {
-                font-size: 3rem;
+            
+            .header-icons {
+                gap: 1rem;
             }
+            
+            .logo {
+                font-size: 1.8rem;
+                letter-spacing: 4px;
+            }
+            
+            .logo span {
+                font-size: 2.2rem;
+            }
+            
+            .slider {
+                height: 60vh;
+                min-height: 400px;
+            }
+            
+            .slide-content h2 {
+                font-size: 2.5rem;
+            }
+            
             .slide-content p {
                 font-size: 1rem;
             }
+            
             .products-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
             }
+            
+            .product-image {
+                height: 280px;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            
+            .popup-content {
+                padding: 2rem 1.5rem;
+                max-width: 95%;
+            }
+            
+            .popup-content h2 {
+                font-size: 2rem;
+            }
+            
+            .promo-code {
+                font-size: 1.5rem;
+                letter-spacing: 4px;
+                padding: 1rem;
+            }
+            
             .newsletter-form {
                 flex-direction: column;
             }
+            
+            .newsletter-form button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .top-bar {
+                font-size: 0.7rem;
+                padding: 0.4rem 0;
+            }
+            
+            .top-bar i {
+                margin: 0 0.3rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+                letter-spacing: 3px;
+            }
+            
+            .logo span {
+                font-size: 1.8rem;
+            }
+            
+            .logo-maison {
+                font-size: 0.6rem;
+                letter-spacing: 3px;
+            }
+            
+            .logo-since {
+                font-size: 0.5rem;
+            }
+            
+            .header-icons {
+                gap: 0.8rem;
+                font-size: 1rem;
+            }
+            
+            .slider {
+                height: 50vh;
+                min-height: 350px;
+            }
+            
+            .slide-content {
+                bottom: 8%;
+                left: 3%;
+                padding: 1rem;
+            }
+            
+            .slide-content h2 {
+                font-size: 2rem;
+            }
+            
+            .slide-content p {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+            
+            .slide-btn {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.7rem;
+            }
+            
+            .slider-controls {
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .slider-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .dots {
+                bottom: 25px;
+                left: 15px;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .section-description {
+                font-size: 0.9rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .product-image {
+                height: 320px;
+            }
+            
+            .product-info h3 {
+                font-size: 1.3rem;
+            }
+            
+            .advantages-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .newsletter h3 {
+                font-size: 1.8rem;
+            }
+            
             .footer-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
+            
             .footer-bottom {
                 flex-direction: column;
-                gap: 1rem;
                 text-align: center;
+            }
+            
+            .popup-content {
+                padding: 1.8rem 1.2rem;
+            }
+            
+            .popup-content h2 {
+                font-size: 1.8rem;
+            }
+            
+            .promo-code {
+                font-size: 1.3rem;
+                letter-spacing: 3px;
+                padding: 0.8rem;
+            }
+            
+            .popup-close {
+                top: 10px;
+                right: 10px;
+                width: 30px;
+                height: 30px;
+                font-size: 1.2rem;
+            }
+            
+            .popup-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .toast-notification {
+                left: 15px;
+                right: 15px;
+                padding: 0.8rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            
+            .toast-content {
+                gap: 0.5rem;
+            }
+            
+            .btn-wa {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+                width: 100%;
             }
         }
     </style>
@@ -1051,12 +1289,14 @@
 <body>
     <!-- Toast notification -->
     <div class="toast-notification" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toast-message">Produit ajouté au panier</span>
-        <a href="/panier">Voir le panier →</a>
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="toast-message">Produit ajouté au panier</span>
+        </div>
+        <a href="/panier">Voir</a>
     </div>
 
-    <!-- POPUP PROMOTION -15% -->
+    <!-- POPUP PROMOTION -15% (VERSION RESPONSIVE) -->
     <div class="promo-popup" id="promoPopup">
         <div class="popup-content">
             <button class="popup-close" onclick="closePromo()"><i class="fas fa-times"></i></button>
@@ -1064,7 +1304,7 @@
             <h2>Votre premier<br><span>parfum AURA</span></h2>
             <p>Inscrivez-vous à notre newsletter et recevez -15% sur votre première commande, valable sur toute la collection.</p>
             <div class="promo-code">BIENVENUE15</div>
-            <form class="newsletter-form" style="margin: 2rem 0;" onsubmit="handleNewsletter(event)">
+            <form class="newsletter-form" style="margin: 1.5rem 0;" onsubmit="handleNewsletter(event)">
                 <input type="email" placeholder="Votre adresse email" required>
                 <button type="submit">S'inscrire</button>
             </form>
@@ -1200,8 +1440,8 @@
                                 <span>Voir détails</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
-                            <button onclick="ajouterAuPanier('{{ id }}', 1)" class="btn-product-action btn-add-to-cart">
-                                <span><i class="fas fa-shopping-cart"></i> Ajouter au panier</span>
+                            <button onclick="ajouterAuPanier('{{ id }}', 1, event)" class="btn-product-action btn-add-to-cart">
+                                <span><i class="fas fa-shopping-cart"></i> Ajouter</span>
                                 <span>{{ parfum.prix_promo if parfum.en_promo else parfum.prix }}€</span>
                             </button>
                         </div>
@@ -1234,14 +1474,14 @@
                 {% endfor %}
             </div>
 
-            <!-- Bouton WhatsApp et Panier -->
-            <div style="text-align: center; margin-top: 3rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <!-- Boutons d'action -->
+            <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <a href="https://wa.me/33752771701?text=Bonjour%20Aura%2C%20je%20souhaite%20des%20informations%20sur%20vos%20parfums" 
                    class="btn-wa" target="_blank">
-                   <i class="fab fa-whatsapp"></i> Commander sur WhatsApp
+                   <i class="fab fa-whatsapp"></i> Commander
                 </a>
                 <a href="/panier" class="btn-wa" style="background: var(--noir-profond);">
-                    <i class="fas fa-shopping-bag"></i> Voir mon panier
+                    <i class="fas fa-shopping-bag"></i> Panier
                     {% if cart_count > 0 %}
                     ({{ cart_count }})
                     {% endif %}
@@ -1256,22 +1496,22 @@
                     <div class="advantage-item" data-aos="fade-up" data-aos-delay="0">
                         <i class="fas fa-truck"></i>
                         <h4>Livraison offerte</h4>
-                        <p>Dès 150€ d'achat en France métropolitaine</p>
+                        <p>Dès 150€ d'achat</p>
                     </div>
                     <div class="advantage-item" data-aos="fade-up" data-aos-delay="100">
                         <i class="fas fa-gem"></i>
                         <h4>Échantillons offerts</h4>
-                        <p>3 échantillons au choix avec chaque commande</p>
+                        <p>3 avec chaque commande</p>
                     </div>
                     <div class="advantage-item" data-aos="fade-up" data-aos-delay="200">
                         <i class="fas fa-lock"></i>
                         <h4>Paiement sécurisé</h4>
-                        <p>CB, PayPal, Apple Pay, virement bancaire</p>
+                        <p>CB, PayPal, Apple Pay</p>
                     </div>
                     <div class="advantage-item" data-aos="fade-up" data-aos-delay="300">
                         <i class="fas fa-undo-alt"></i>
                         <h4>Retour gratuit</h4>
-                        <p>Satisfait ou remboursé sous 30 jours</p>
+                        <p>Satisfait ou remboursé</p>
                     </div>
                 </div>
             </div>
@@ -1279,21 +1519,20 @@
 
         <!-- SECTION HISTOIRE -->
         <div class="container" data-aos="fade-up">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin: 5rem 0; background: var(--blanc-casse); padding: 3rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 3rem 0; background: var(--blanc-casse); padding: 2rem;">
                 <div>
                     <div class="section-subtitle">NOTRE HISTOIRE</div>
-                    <h2 style="font-size: 3rem; font-weight: 300; margin: 1rem 0;">Un siècle<br>d'excellence</h2>
-                    <p style="color: #666; line-height: 1.8; margin-bottom: 2rem;">
-                        Fondée en 1925 par Philippe Delacroix, la maison AURA perpétue un savoir-faire artisanal unique, 
-                        alliant les techniques ancestrales de la parfumerie de Grasse aux innovations les plus modernes.
+                    <h2 style="font-size: 2.5rem; font-weight: 300; margin: 1rem 0;">Un siècle<br>d'excellence</h2>
+                    <p style="color: #666; line-height: 1.6; margin-bottom: 1.5rem;">
+                        Fondée en 1925 par Philippe Delacroix, la maison AURA perpétue un savoir-faire artisanal unique.
                     </p>
-                    <a href="/histoire" style="color: var(--or-fonce); text-decoration: none; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; border-bottom: 1px solid var(--or); padding-bottom: 5px;">
-                        Découvrir notre héritage <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                    <a href="/histoire" style="color: var(--or-fonce); text-decoration: none; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; border-bottom: 1px solid var(--or); padding-bottom: 5px;">
+                        Découvrir <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
                     </a>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                    <img src="/static/slide2.jpg" style="width: 100%; height: 250px; object-fit: cover;" alt="Atelier">
-                    <img src="/static/slide1.jpg" style="width: 100%; height: 250px; object-fit: cover;" alt="Flacon">
+                    <img src="/static/slide2.jpg" style="width: 100%; height: 200px; object-fit: cover;" alt="Atelier">
+                    <img src="/static/slide1.jpg" style="width: 100%; height: 200px; object-fit: cover;" alt="Flacon">
                 </div>
             </div>
         </div>
@@ -1302,14 +1541,11 @@
         <section class="newsletter" data-aos="fade-up">
             <div class="container newsletter-content">
                 <h3>L'élégance par correspondance</h3>
-                <p>Recevez nos dernières créations, invitations aux événements privés et offres exclusives.</p>
+                <p>Recevez nos dernières créations et offres exclusives.</p>
                 <form class="newsletter-form" onsubmit="handleNewsletter(event)">
-                    <input type="email" placeholder="Votre adresse email" required>
+                    <input type="email" placeholder="Votre email" required>
                     <button type="submit">S'abonner</button>
                 </form>
-                <p style="font-size: 0.7rem; margin-top: 1rem; color: #999;">
-                    En vous inscrivant, vous acceptez de recevoir nos communications et offrez -15% sur votre première commande.
-                </p>
             </div>
         </section>
     </main>
@@ -1320,15 +1556,11 @@
             <div class="footer-grid">
                 <div class="footer-about">
                     <div class="footer-logo">AURA<span>.</span></div>
-                    <p>
-                        Maison de parfumerie française depuis 1925, créatrice de parfums d'exception 
-                        alliant savoir-faire artisanal et ingrédients rares.
-                    </p>
+                    <p>Maison de parfumerie française depuis 1925.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
                 <div class="footer-column">
@@ -1338,35 +1570,28 @@
                         <li><a href="/parfum/cuir-russie">Tobacco Vanille</a></li>
                         <li><a href="/parfum/bois-encens">Bakara</a></li>
                         <li><a href="/parfum/iris-poudre">Féroce Intense</a></li>
-                        <li><a href="/collection">Tous les parfums</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h4>Informations</h4>
+                    <h4>Infos</h4>
                     <ul>
-                        <li><a href="/histoire">Notre histoire</a></li>
+                        <li><a href="/histoire">Histoire</a></li>
                         <li><a href="#">Livraison</a></li>
                         <li><a href="#">Mentions légales</a></li>
-                        <li><a href="#">CGV</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
                     <h4>Contact</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> 12 Rue de la Paix, 75002 Paris</p>
-                    <p><i class="fas fa-phone"></i> +33 1 42 61 12 34</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Paris</p>
                     <p><i class="fab fa-whatsapp"></i> 07 52 71 77 01</p>
-                    <p><i class="far fa-envelope"></i> contact@aura-parfums.fr</p>
-                    <p><i class="far fa-clock"></i> Lun-Sam 10h-19h</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <div>© 2025 AURA Parfums. Tous droits réservés. Made in France.</div>
+                <div>© 2025 AURA Parfums</div>
                 <div class="payment-methods">
                     <i class="fab fa-cc-visa"></i>
                     <i class="fab fa-cc-mastercard"></i>
-                    <i class="fab fa-cc-amex"></i>
                     <i class="fab fa-cc-paypal"></i>
-                    <i class="fab fa-apple-pay"></i>
                 </div>
             </div>
         </div>
@@ -1377,25 +1602,62 @@
     <script>
         // Initialisation AOS
         AOS.init({
-            duration: 1200,
+            duration: 800,
             once: true,
-            offset: 100
+            offset: 50
         });
 
-        // Popup promotion
-        setTimeout(() => {
-            document.getElementById('promoPopup').classList.add('active');
-        }, 3000);
+        // POPUP AMÉLIORÉ POUR MOBILE
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier si le popup a déjà été affiché dans cette session
+            const popupShown = sessionStorage.getItem('popupShown');
+            
+            if (!popupShown) {
+                // Afficher le popup après 2 secondes
+                setTimeout(() => {
+                    const popup = document.getElementById('promoPopup');
+                    if (popup) {
+                        popup.classList.add('active');
+                        // Empêcher le scroll du body quand le popup est ouvert
+                        document.body.style.overflow = 'hidden';
+                    }
+                }, 2000);
+            }
 
-        function closePromo() {
-            document.getElementById('promoPopup').classList.remove('active');
-        }
+            // Fermeture du popup
+            window.closePromo = function() {
+                const popup = document.getElementById('promoPopup');
+                if (popup) {
+                    popup.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                    // Marquer comme affiché pour cette session
+                    sessionStorage.setItem('popupShown', 'true');
+                }
+            };
 
-        function handleNewsletter(event) {
+            // Fermeture en cliquant en dehors du popup
+            const popup = document.getElementById('promoPopup');
+            if (popup) {
+                popup.addEventListener('click', function(e) {
+                    if (e.target === popup) {
+                        closePromo();
+                    }
+                });
+            }
+        });
+
+        // Gestionnaire newsletter
+        window.handleNewsletter = function(event) {
             event.preventDefault();
-            alert('Merci pour votre inscription ! Votre code BIENVENUE15 est valable 7 jours.');
-            closePromo();
-        }
+            const email = event.target.querySelector('input[type="email"]').value;
+            
+            if (email && email.includes('@')) {
+                alert('Merci ! Votre code BIENVENUE15 est valable 7 jours.');
+                closePromo();
+            } else {
+                alert('Email invalide.');
+            }
+        };
 
         // Fonction pour afficher le toast
         function showToast(message) {
@@ -1432,7 +1694,11 @@
         }
 
         // Fonction pour ajouter au panier
-        async function ajouterAuPanier(produitId, quantite) {
+        window.ajouterAuPanier = async function(produitId, quantite, event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
             try {
                 const response = await fetch('/ajouter-au-panier', {
                     method: 'POST',
@@ -1449,13 +1715,13 @@
                 
                 if (data.success) {
                     updateCartBadge(data.cart_count);
-                    showToast('✅ Produit ajouté au panier !');
+                    showToast('✅ Produit ajouté !');
                 }
             } catch (error) {
                 console.error('Erreur:', error);
-                showToast('❌ Erreur lors de l\'ajout au panier');
+                showToast('❌ Erreur');
             }
-        }
+        };
 
         // Slider
         const slides = document.querySelectorAll('.slide');
@@ -1509,15 +1775,22 @@
         });
 
         function startAutoSlide() {
-            interval = setInterval(nextSlide, 6000);
+            interval = setInterval(nextSlide, 5000);
         }
         startAutoSlide();
 
         const slider = document.getElementById('heroSlider');
-        slider.addEventListener('mouseenter', () => clearInterval(interval));
-        slider.addEventListener('mouseleave', () => {
-            clearInterval(interval);
-            interval = setInterval(nextSlide, 6000);
+        if (slider) {
+            slider.addEventListener('mouseenter', () => clearInterval(interval));
+            slider.addEventListener('mouseleave', () => {
+                clearInterval(interval);
+                interval = setInterval(nextSlide, 5000);
+            });
+        }
+
+        // Empêcher la propagation des clics sur les boutons d'action
+        document.querySelectorAll('.btn-product-action').forEach(btn => {
+            btn.addEventListener('click', (e) => e.stopPropagation());
         });
     </script>
 </body>
