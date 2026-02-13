@@ -1,0 +1,247 @@
+{# templates/histoire.html - Notre histoire #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA · Notre histoire</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --or: #c5a267;
+            --or-fonce: #a67c4f;
+            --beige: #fcfaf7;
+            --noir-profond: #1a1a1a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--beige);
+            color: var(--noir-profond);
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        
+        /* Header identique */
+        .top-bar { background: var(--noir-profond); color: var(--or); padding: 0.5rem 0; text-align: center; }
+        header {
+            position: sticky; top: 0; background: rgba(252,250,247,0.92);
+            backdrop-filter: blur(12px); border-bottom: 1px solid rgba(197,162,103,0.2);
+            padding: 1rem 0;
+        }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo {
+            font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;
+            letter-spacing: 8px; text-transform: uppercase;
+        }
+        .logo span { color: var(--or-fonce); font-size: 3rem; }
+        .nav-links { display: flex; gap: 3rem; }
+        .nav-links a {
+            text-decoration: none; color: var(--noir-profond); font-size: 0.9rem;
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        /* Hero histoire */
+        .histoire-hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1616949755611-8c1d677bd6b6?q=80&w=1887');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .histoire-hero h1 {
+            font-size: 5rem;
+            font-weight: 300;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 5rem auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: var(--or);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            margin-bottom: 3rem;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 3px solid var(--or);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+        .left {
+            left: 0;
+        }
+        .right {
+            left: 50%;
+        }
+        .left::after {
+            right: -10px;
+        }
+        .right::after {
+            left: -10px;
+        }
+        .timeline-content {
+            padding: 20px;
+            background: white;
+            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.1);
+        }
+        .timeline-year {
+            font-size: 2rem;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--or-fonce);
+            margin-bottom: 0.5rem;
+        }
+
+        .values {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin: 5rem 0;
+            text-align: center;
+        }
+        .value-item i {
+            font-size: 3rem;
+            color: var(--or);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::after { left: 31px; }
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-item::after {
+                left: 21px;
+            }
+            .left::after, .right::after { left: 21px; }
+            .right { left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <i class="fas fa-truck"></i> LIVRAISON OFFERTE DÈS 150€
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-inner">
+            <div class="logo">AURA<span>.</span></div>
+            <div class="nav-links">
+                <a href="/">Accueil</a>
+                <a href="/collection">Collection</a>
+                <a href="/histoire">Histoire</a>
+                <a href="/contact">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="histoire-hero">
+            <h1>Un siècle d'excellence</h1>
+        </div>
+
+        <div class="container">
+            <div style="text-align: center; max-width: 800px; margin: 0 auto 5rem;">
+                <h2 style="font-size: 2.5rem; font-weight: 300; margin-bottom: 2rem;">L'héritage AURA</h2>
+                <p style="color: #666; line-height: 1.8;">
+                    Fondée en 1925 par Philippe Delacroix, la maison AURA est née d'une passion pour les matières premières 
+                    rares et d'un désir de créer des parfums qui racontent des histoires. Depuis quatre générations, 
+                    notre famille perpétue un savoir-faire artisanal unique, alliant les techniques ancestrales de 
+                    la parfumerie de Grasse aux innovations les plus modernes.
+                </p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1925</div>
+                        <h3>Fondation de la maison</h3>
+                        <p>Philippe Delacroix ouvre son premier atelier à Paris et crée son premier parfum : "Rose de Minuit".</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1950</div>
+                        <h3>Reconnaissance internationale</h3>
+                        <p>La maison reçoit son premier prix au Concours International de Parfumerie de Grasse.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1985</div>
+                        <h3>Installation à Grasse</h3>
+                        <p>Création de notre laboratoire de recherche au cœur de la capitale mondiale du parfum.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2010</div>
+                        <h3>Collection Heritage</h3>
+                        <p>Lancement de la collection Heritage, réinterprétation des classiques de la maison.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2025</div>
+                        <h3>Centenaire</h3>
+                        <p>Création d'une édition limitée pour célébrer 100 ans d'excellence et de passion.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="values">
+                <div class="value-item">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Matières premières d'exception</h3>
+                    <p>Nous sélectionnons les meilleurs ingrédients à travers le monde, dans le respect des savoir-faire locaux.</p>
+                </div>
+                <div class="value-item">
+                    <i class="fas fa-flask"></i>
+                    <h3>Savoir-faire artisanal</h3>
+                    <p>Chaque parfum est élaboré selon des méthodes traditionnelles, dans notre atelier de Grasse.</p>
+                </div>
+                <div class="value-item">
+                    <i class="fas fa-gem"></i>
+                    <h3>Excellence française</h3>
+                    <p>Un héritage de luxe et de raffinement transmis depuis quatre générations.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer style="background: var(--noir-profond); color: white; padding: 3rem 0; margin-top: 5rem; text-align: center;">
+        <p>© 2025 AURA Parfums. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

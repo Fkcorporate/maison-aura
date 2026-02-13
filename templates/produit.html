@@ -1,0 +1,1223 @@
+{# templates/produit.html - Page fiche produit détaillée luxe avec panier #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA · {{ parfum.nom }} | Parfum d'exception</title>
+    
+    <!-- SEO -->
+    <meta name="description" content="{{ parfum.description_courte }}">
+    <meta property="og:title" content="AURA · {{ parfum.nom }}">
+    <meta property="og:description" content="{{ parfum.description_courte }}">
+    <meta property="og:image" content="/static/{{ parfum.image_principale }}">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        :root {
+            --or: #c5a267;
+            --or-fonce: #a67c4f;
+            --or-clair: #e5d3b5;
+            --noir-profond: #1a1a1a;
+            --noir-doux: #2b2b2b;
+            --beige: #fcfaf7;
+            --beige-fonce: #f5f0e9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--beige);
+            color: var(--noir-doux);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            letter-spacing: 0.03em;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 4rem;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            background: var(--noir-profond);
+            color: var(--or-clair);
+            padding: 0.5rem 0;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .top-bar i {
+            margin: 0 0.5rem;
+            color: var(--or);
+        }
+
+        /* ===== HEADER AVEC PANIER ===== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            background: rgba(252,250,247,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(197,162,103,0.2);
+            padding: 0.8rem 0;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .logo-maison {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--or-fonce);
+            margin-bottom: 2px;
+            font-weight: 300;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--noir-profond);
+            line-height: 1;
+        }
+
+        .logo span {
+            font-weight: 700;
+            font-style: italic;
+            color: var(--or-fonce);
+            font-size: 3rem;
+        }
+
+        .logo-since {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--or-fonce);
+            text-transform: uppercase;
+            margin-top: -5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--noir-doux);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 400;
+            transition: all 0.3s;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--or-fonce);
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--or-fonce);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--noir-doux);
+            align-items: center;
+        }
+
+        .header-icons i {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .header-icons i:hover {
+            color: var(--or-fonce);
+            transform: translateY(-2px);
+        }
+
+        /* Badge du panier */
+        .cart-icon-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--or-fonce);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Fil d'Ariane */
+        .breadcrumb {
+            margin: 2rem 0;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .breadcrumb a {
+            color: #999;
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            color: var(--or-fonce);
+        }
+        .breadcrumb span {
+            color: var(--noir-doux);
+        }
+
+        /* ===== PRODUIT ===== */
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin: 3rem 0 5rem;
+        }
+
+        /* Galerie */
+        .gallery {
+            position: relative;
+        }
+        .main-image {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.2);
+        }
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .thumbnail {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+        .thumbnail:hover, .thumbnail.active {
+            opacity: 1;
+            border: 2px solid var(--or);
+        }
+
+        .product-badges {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        .badge {
+            padding: 0.5rem 1rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 2px;
+        }
+        .badge-nouveau {
+            background: var(--or);
+            color: var(--noir-profond);
+        }
+        .badge-promo {
+            background: #d44e4e;
+            color: white;
+        }
+        .badge-exclusif {
+            background: var(--noir-profond);
+            color: var(--or);
+        }
+
+        /* Infos produit */
+        .product-category {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--or-fonce);
+            margin-bottom: 0.5rem;
+        }
+        .product-title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stars {
+            color: var(--or);
+        }
+        .rating-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .product-price-box {
+            background: var(--beige-fonce);
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid var(--or-clair);
+        }
+        .price-row {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .current-price {
+            font-size: 2.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--noir-profond);
+        }
+        .old-price {
+            font-size: 1.5rem;
+            text-decoration: line-through;
+            color: #999;
+        }
+        .discount {
+            background: #d44e4e;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 2px;
+            font-size: 0.8rem;
+        }
+        .stock-info {
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .stock-info i {
+            color: var(--or);
+            margin-right: 0.5rem;
+        }
+
+        .product-description {
+            margin: 2rem 0;
+            line-height: 1.8;
+            color: #4a4a4a;
+        }
+
+        /* Boutons d'action */
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .btn-add-to-cart {
+            flex: 1;
+            padding: 1.2rem;
+            background: var(--noir-profond);
+            color: white;
+            border: 1px solid var(--noir-profond);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add-to-cart:hover {
+            background: transparent;
+            color: var(--noir-profond);
+        }
+
+        .btn-wa {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 1.2rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-wa:hover {
+            background: #20b859;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-wa i {
+            font-size: 1.2rem;
+        }
+
+        .product-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+            padding: 2rem 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #666;
+        }
+        .meta-item i {
+            color: var(--or);
+            width: 20px;
+        }
+
+        /* Sélecteur de quantité */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .quantity-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+        }
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .quantity-btn:hover {
+            background: var(--or-clair);
+        }
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        /* Fiche technique */
+        .technical-sheet {
+            background: white;
+            padding: 3rem;
+            margin: 4rem 0;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
+        }
+        .sheet-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .sheet-title span {
+            border-bottom: 2px solid var(--or);
+            padding-bottom: 8px;
+        }
+
+        .notes-pyramid {
+            display: flex;
+            justify-content: space-around;
+            margin: 3rem 0;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .note {
+            flex: 1;
+            min-width: 200px;
+        }
+        .note-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--or-fonce);
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+        .note-value {
+            font-size: 1.2rem;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        .spec-item {
+            text-align: center;
+        }
+        .spec-label {
+            font-size: 0.8rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .spec-value {
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Avis clients */
+        .reviews-section {
+            margin: 4rem 0;
+        }
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .average-rating {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .big-rating {
+            font-size: 3rem;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--or-fonce);
+        }
+        .review-card {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 1rem;
+            border: 1px solid #eee;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .review-author {
+            font-weight: 600;
+        }
+        .review-date {
+            color: #999;
+            font-size: 0.8rem;
+        }
+        .no-reviews {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Produits similaires */
+        .similar-products {
+            margin: 5rem 0;
+        }
+        .similar-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .similar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .similar-card {
+            background: white;
+            padding: 1rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .similar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.15);
+        }
+        .similar-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .similar-card h4 {
+            font-size: 1.3rem;
+            margin: 1rem 0;
+        }
+        .similar-price {
+            color: var(--or-fonce);
+            font-size: 1.2rem;
+        }
+
+        /* Toast notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--noir-profond);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--or);
+        }
+
+        .toast-notification.show {
+            transform: translateX(0);
+        }
+
+        .toast-notification i {
+            color: var(--or);
+            font-size: 1.2rem;
+        }
+
+        .toast-notification a {
+            color: var(--or);
+            text-decoration: none;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--noir-profond);
+            color: var(--beige);
+            padding: 4rem 0 2rem;
+            margin-top: 5rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 3rem;
+        }
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+        }
+        .footer-logo span {
+            color: var(--or);
+        }
+        .footer-about p {
+            color: #999;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .social-links a {
+            color: var(--or-clair);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        .social-links a:hover {
+            color: var(--or);
+            transform: translateY(-3px);
+        }
+        .footer-column h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--or);
+        }
+        .footer-column ul {
+            list-style: none;
+        }
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        .footer-column ul li a {
+            color: #999;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        .footer-column ul li a:hover {
+            color: var(--or);
+            padding-left: 5px;
+        }
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #999;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        .footer-contact i {
+            color: var(--or);
+            width: 20px;
+        }
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            font-size: 1.5rem;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .container { padding: 0 2rem; }
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+            .similar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .specs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 568px) {
+            .product-actions {
+                flex-direction: column;
+            }
+            .similar-grid {
+                grid-template-columns: 1fr;
+            }
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast notification -->
+    <div class="toast-notification" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Produit ajouté au panier</span>
+        <a href="/panier">Voir le panier →</a>
+    </div>
+
+    <div class="top-bar">
+        <div class="container">
+            <i class="fas fa-truck"></i> LIVRAISON OFFERTE DÈS 150€ 
+            <i class="fas fa-circle" style="font-size: 0.3rem; margin: 0 1rem;"></i>
+            <i class="fas fa-gem"></i> ÉCHANTILLONS OFFERTS
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-inner">
+            <div class="logo-container">
+                <div class="logo-maison">MAISON</div>
+                <div class="logo">
+                    AURA<span>.</span>
+                </div>
+                <div class="logo-since">Depuis 1925</div>
+            </div>
+            <div class="nav-links">
+                <a href="/">Accueil</a>
+                <a href="/collection">Collection</a>
+                <a href="/histoire">Histoire</a>
+                <a href="/contact">Contact</a>
+            </div>
+            <div class="header-icons">
+                <i class="far fa-heart"></i>
+                <i class="far fa-user"></i>
+                <i class="fas fa-search"></i>
+                <a href="/panier" class="cart-icon-container" style="color: inherit;">
+                    <i class="fas fa-shopping-bag"></i>
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge" id="cart-badge">{{ cart_count }}</span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Fil d'Ariane -->
+        <div class="breadcrumb">
+            <a href="/">Accueil</a> / <a href="/collection">Collection</a> / <span>{{ parfum.nom }}</span>
+        </div>
+
+        <!-- Produit -->
+        <div class="product-container">
+            <!-- Galerie -->
+            <div class="gallery">
+                <div class="product-badges">
+                    {% if parfum.nouveau %}
+                    <span class="badge badge-nouveau">Nouveau</span>
+                    {% endif %}
+                    {% if parfum.en_promo %}
+                    <span class="badge badge-promo">-{{ ((parfum.prix - parfum.prix_promo) / parfum.prix * 100)|round|int }}%</span>
+                    {% endif %}
+                    {% if parfum.collection_limitée %}
+                    <span class="badge badge-exclusif">Édition limitée</span>
+                    {% endif %}
+                </div>
+                
+                <img src="/static/{{ parfum.image_principale }}" alt="{{ parfum.nom }}" class="main-image" id="mainImage">
+                
+                <div class="thumbnail-grid">
+                    <img src="/static/{{ parfum.image_principale }}" alt="" class="thumbnail active" onclick="changeImage(this.src)">
+                    {% if parfum.image_secondaire %}
+                    <img src="/static/{{ parfum.image_secondaire }}" alt="" class="thumbnail" onclick="changeImage(this.src)">
+                    {% endif %}
+                    {% if parfum.image_flacon %}
+                    <img src="/static/{{ parfum.image_flacon }}" alt="" class="thumbnail" onclick="changeImage(this.src)">
+                    {% endif %}
+                    {% if parfum.image_emballage %}
+                    <img src="/static/{{ parfum.image_emballage }}" alt="" class="thumbnail" onclick="changeImage(this.src)">
+                    {% endif %}
+                    {% if parfum.image_2 %}
+                    <img src="/static/{{ parfum.image_2 }}" alt="" class="thumbnail" onclick="changeImage(this.src)">
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Infos -->
+            <div class="product-info">
+                <div class="product-category">{{ parfum.famille }}</div>
+                <h1 class="product-title">{{ parfum.nom }}</h1>
+                
+                <div class="product-rating">
+                    <div class="stars">
+                        {% for i in range(5) %}
+                            {% if i < parfum.notes_moyenne|int %}
+                            <i class="fas fa-star"></i>
+                            {% elif i < parfum.notes_moyenne %}
+                            <i class="fas fa-star-half-alt"></i>
+                            {% else %}
+                            <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="rating-text">{{ parfum.notes_moyenne }}/5 · {{ parfum.nb_avis }} avis</div>
+                </div>
+
+                <div class="product-price-box">
+                    <div class="price-row">
+                        {% if parfum.en_promo %}
+                        <span class="old-price">{{ parfum.prix }}€</span>
+                        <span class="current-price">{{ parfum.prix_promo }}€</span>
+                        <span class="discount">-{{ ((parfum.prix - parfum.prix_promo) / parfum.prix * 100)|round|int }}%</span>
+                        {% else %}
+                        <span class="current-price">{{ parfum.prix }}€</span>
+                        {% endif %}
+                    </div>
+                    <div class="stock-info">
+                        <i class="fas fa-check-circle"></i>
+                        {% if parfum.stock > 10 %}
+                        En stock · Livraison 24/48h
+                        {% elif parfum.stock > 0 %}
+                        Plus que {{ parfum.stock }} exemplaires
+                        {% else %}
+                        Rupture temporaire
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="product-description">
+                    <p>{{ parfum.description_longue }}</p>
+                </div>
+
+                <!-- Sélecteur de quantité -->
+                <div class="quantity-selector">
+                    <span class="quantity-label">Quantité :</span>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                        <input type="text" class="quantity-input" id="quantite" value="1" readonly>
+                        <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="product-actions">
+                    <button onclick="ajouterAuPanier('{{ parfum.id }}')" class="btn-add-to-cart">
+                        <i class="fas fa-shopping-cart"></i> Ajouter au panier
+                    </button>
+                    <a href="https://wa.me/33752771701?text=Bonjour%20Aura%2C%20je%20souhaite%20commander%20{{ parfum.nom|replace(' ', '%20') }}%20({{ parfum.prix }}€)" 
+                       class="btn-wa" target="_blank">
+                       <i class="fab fa-whatsapp"></i> Acheter maintenant
+                    </a>
+                </div>
+
+                <div class="product-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-flask"></i>
+                        <div>
+                            <div style="font-size: 0.7rem; color: #999;">Concentration</div>
+                            <div>{{ parfum.concentration }}</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-ruler"></i>
+                        <div>
+                            <div style="font-size: 0.7rem; color: #999;">Volume</div>
+                            <div>{{ parfum.volume }}</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <div style="font-size: 0.7rem; color: #999;">Tenue</div>
+                            <div>{{ parfum.tenue }}</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <div style="font-size: 0.7rem; color: #999;">Création</div>
+                            <div>{{ parfum.annee_creation }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fiche technique -->
+        <div class="technical-sheet">
+            <h2 class="sheet-title"><span>Fiche technique</span></h2>
+            
+            <div class="notes-pyramid">
+                <div class="note">
+                    <div class="note-label">Tête</div>
+                    <div class="note-value">{{ parfum.notes.tete|join(' · ') }}</div>
+                </div>
+                <div class="note">
+                    <div class="note-label">Cœur</div>
+                    <div class="note-value">{{ parfum.notes.coeur|join(' · ') }}</div>
+                </div>
+                <div class="note">
+                    <div class="note-label">Fond</div>
+                    <div class="note-value">{{ parfum.notes.fond|join(' · ') }}</div>
+                </div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-label">Famille olfactive</div>
+                    <div class="spec-value">{{ parfum.famille }}</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Nez créateur</div>
+                    <div class="spec-value">{{ parfum.nez }}</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Collection</div>
+                    <div class="spec-value">{{ parfum.collection }}</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Saison</div>
+                    <div class="spec-value">{{ parfum.saison }}</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Genre</div>
+                    <div class="spec-value">{{ parfum.genre }}</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Origine</div>
+                    <div class="spec-value">{{ parfum.origine_ingredients }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Avis clients -->
+        <div class="reviews-section">
+            <div class="reviews-header">
+                <h2 style="font-size: 2rem;">Avis clients</h2>
+                <div class="average-rating">
+                    <div class="big-rating">{{ parfum.notes_moyenne }}</div>
+                    <div>
+                        <div class="stars">
+                            {% for i in range(5) %}
+                                {% if i < parfum.notes_moyenne|int %}
+                                <i class="fas fa-star"></i>
+                                {% elif i < parfum.notes_moyenne %}
+                                <i class="fas fa-star-half-alt"></i>
+                                {% else %}
+                                <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div>{{ parfum.nb_avis }} avis vérifiés</div>
+                    </div>
+                </div>
+            </div>
+
+            {# Vérification si 'avis' existe #}
+            {% if parfum.avis and parfum.avis|length > 0 %}
+                {% for avis in parfum.avis[:3] %}
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="review-author">{{ avis.auteur }}</span>
+                        <span class="review-date">{{ avis.date }}</span>
+                    </div>
+                    <div class="stars" style="margin-bottom: 0.5rem;">
+                        {% for i in range(5) %}
+                            {% if i < avis.note %}
+                            <i class="fas fa-star"></i>
+                            {% else %}
+                            <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <p>"{{ avis.commentaire }}"</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-reviews">
+                    <i class="far fa-star" style="font-size: 3rem; color: #ddd; margin-bottom: 1rem;"></i>
+                    <p>Soyez le premier à donner votre avis sur ce parfum.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Produits similaires -->
+        {% if similaires %}
+        <div class="similar-products">
+            <h2 class="similar-title">Vous aimerez aussi</h2>
+            <div class="similar-grid">
+                {% for id, similaire in similaires.items() %}
+                <a href="/parfum/{{ id }}" class="similar-card">
+                    <img src="/static/{{ similaire.image_principale }}" alt="{{ similaire.nom }}">
+                    <h4>{{ similaire.nom }}</h4>
+                    <div class="similar-price">{{ similaire.prix }}€</div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">AURA<span>.</span></div>
+                    <p>Maison de parfumerie française depuis 1925</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Collection</h4>
+                    <ul>
+                        <li><a href="/parfum/rose-absolue">Bouquet ABSOLU</a></li>
+                        <li><a href="/parfum/cuir-russie">Tobacco Vanille</a></li>
+                        <li><a href="/parfum/bois-encens">Bakara</a></li>
+                        <li><a href="/parfum/iris-poudre">Féroce Intense</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Informations</h4>
+                    <ul>
+                        <li><a href="/histoire">Histoire</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-phone"></i> +33 1 42 61 12 34</p>
+                    <p><i class="fab fa-whatsapp"></i> 07 52 71 77 01</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>© 2025 AURA Parfums. Tous droits réservés.</div>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Variable pour la quantité
+        let quantite = 1;
+
+        function changeImage(src) {
+            document.getElementById('mainImage').src = src;
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+                if(thumb.src === src) thumb.classList.add('active');
+            });
+        }
+
+        function changeQuantity(delta) {
+            const newQty = quantite + delta;
+            if (newQty >= 1 && newQty <= 10) {
+                quantite = newQty;
+                document.getElementById('quantite').value = quantite;
+            }
+        }
+
+        // Fonction pour afficher le toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Fonction pour mettre à jour le badge du panier
+        function updateCartBadge(count) {
+            const badge = document.getElementById('cart-badge');
+            const cartIcon = document.querySelector('.cart-icon-container');
+            
+            if (count > 0) {
+                if (badge) {
+                    badge.textContent = count;
+                } else {
+                    const newBadge = document.createElement('span');
+                    newBadge.className = 'cart-badge';
+                    newBadge.id = 'cart-badge';
+                    newBadge.textContent = count;
+                    cartIcon.appendChild(newBadge);
+                }
+            } else {
+                if (badge) {
+                    badge.remove();
+                }
+            }
+        }
+
+        // Fonction pour ajouter au panier
+        async function ajouterAuPanier(produitId) {
+            try {
+                const response = await fetch('/ajouter-au-panier', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: produitId,
+                        quantite: quantite
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    updateCartBadge(data.cart_count);
+                    showToast('✅ Produit ajouté au panier !');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showToast('❌ Erreur lors de l\'ajout au panier');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,942 @@
+{# templates/collection.html - Toute la collection avec panier #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA · Toute la collection</title>
+    
+    <!-- SEO -->
+    <meta name="description" content="Découvrez l'intégralité de la collection AURA : parfums d'exception, créations uniques alliant savoir-faire artisanal et ingrédients rares.">
+    <meta name="keywords" content="parfum luxe, collection parfums, bouquet absolu, tobacco vanille, bakara, féroce intense">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --or: #c5a267;
+            --or-fonce: #a67c4f;
+            --or-clair: #e5d3b5;
+            --noir-profond: #1a1a1a;
+            --noir-doux: #2b2b2b;
+            --beige: #fcfaf7;
+            --beige-fonce: #f5f0e9;
+            --ombre-subtile: 0 20px 40px -15px rgba(0,0,0,0.15);
+            --ombre-luxe: 0 30px 60px -20px rgba(0,0,0,0.25);
+            --transition-luxe: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            background: var(--beige);
+            color: var(--noir-doux);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            letter-spacing: 0.03em;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 4rem;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            background: var(--noir-profond);
+            color: var(--or-clair);
+            padding: 0.5rem 0;
+            font-size: 0.8rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .top-bar i {
+            margin: 0 0.5rem;
+            color: var(--or);
+        }
+
+        /* ===== HEADER AVEC PANIER ===== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            background: rgba(252,250,247,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(197,162,103,0.2);
+            padding: 0.8rem 0;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .logo-maison {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--or-fonce);
+            margin-bottom: 2px;
+            font-weight: 300;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--noir-profond);
+            line-height: 1;
+        }
+
+        .logo span {
+            color: var(--or-fonce);
+            font-size: 3rem;
+            font-style: italic;
+        }
+
+        .logo-since {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--or-fonce);
+            margin-top: -5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--noir-doux);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: var(--transition-luxe);
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--or-fonce);
+            transition: var(--transition-luxe);
+        }
+
+        .nav-links a:hover {
+            color: var(--or-fonce);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--noir-doux);
+            align-items: center;
+        }
+
+        .header-icons i {
+            cursor: pointer;
+            transition: var(--transition-luxe);
+        }
+
+        .header-icons i:hover {
+            color: var(--or-fonce);
+            transform: translateY(-2px);
+        }
+
+        /* Badge du panier */
+        .cart-icon-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--or-fonce);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* ===== HEADER COLLECTION ===== */
+        .collection-header {
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .collection-title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: var(--noir-profond);
+        }
+
+        .collection-title span {
+            border-bottom: 2px solid var(--or);
+            padding-bottom: 8px;
+        }
+
+        .collection-desc {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* ===== FILTRES ===== */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #999;
+            cursor: pointer;
+            transition: var(--transition-luxe);
+            border-bottom: 2px solid transparent;
+            font-weight: 400;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            color: var(--or-fonce);
+            border-bottom-color: var(--or-fonce);
+        }
+
+        /* ===== GRILLE PRODUITS ===== */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0 5rem;
+        }
+
+        .product-card {
+            background: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--ombre-subtile);
+            transition: var(--transition-luxe);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--ombre-luxe);
+        }
+
+        .product-badges {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            border-radius: 2px;
+        }
+
+        .badge-nouveau {
+            background: var(--or);
+            color: var(--noir-profond);
+        }
+
+        .badge-promo {
+            background: #d44e4e;
+            color: white;
+        }
+
+        .badge-meilleure-vente {
+            background: var(--noir-profond);
+            color: var(--or);
+        }
+
+        .badge-coup-coeur {
+            background: #c5a267;
+            color: var(--noir-profond);
+        }
+
+        .product-image {
+            height: 350px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 2rem 1.5rem 1.5rem;
+            transform: translateY(100%);
+            transition: var(--transition-luxe);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .product-card:hover .product-actions {
+            transform: translateY(0);
+        }
+
+        .btn-product-action {
+            width: 100%;
+            padding: 1rem;
+            background: white;
+            color: var(--noir-profond);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-luxe);
+        }
+
+        .btn-product-action:hover {
+            background: var(--or);
+            color: white;
+        }
+
+        .btn-add-to-cart {
+            background: var(--or-fonce);
+            color: white;
+            border: none;
+        }
+
+        .btn-add-to-cart:hover {
+            background: var(--noir-profond);
+        }
+
+        .product-info {
+            padding: 2rem 1.5rem;
+            background: white;
+        }
+
+        .product-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--or-fonce);
+            margin-bottom: 0.5rem;
+        }
+
+        .product-info h3 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .current-price {
+            font-size: 1.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--noir-profond);
+        }
+
+        .old-price {
+            font-size: 1.1rem;
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--or);
+            font-size: 0.8rem;
+        }
+
+        .product-rating span {
+            color: #666;
+        }
+
+        /* ===== TOAST NOTIFICATION ===== */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--noir-profond);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: var(--ombre-luxe);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--or);
+        }
+
+        .toast-notification.show {
+            transform: translateX(0);
+        }
+
+        .toast-notification i {
+            color: var(--or);
+            font-size: 1.2rem;
+        }
+
+        .toast-notification a {
+            color: var(--or);
+            text-decoration: none;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* ===== BOUTON WHATSAPP ===== */
+        .btn-wa {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 8px 16px -6px rgba(37, 211, 102, 0.4);
+            transition: var(--transition-luxe);
+            margin: 2rem auto;
+        }
+
+        .btn-wa i {
+            font-size: 1.5rem;
+        }
+
+        .btn-wa:hover {
+            background: #20b859;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px -8px rgba(37, 211, 102, 0.6);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--noir-profond);
+            color: var(--beige);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo span {
+            color: var(--or);
+        }
+
+        .footer-about p {
+            color: #999;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: var(--or-clair);
+            font-size: 1.2rem;
+            transition: var(--transition-luxe);
+        }
+
+        .social-links a:hover {
+            color: var(--or);
+            transform: translateY(-3px);
+        }
+
+        .footer-column h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--or);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column ul li a {
+            color: #999;
+            text-decoration: none;
+            transition: var(--transition-luxe);
+            font-size: 0.9rem;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--or);
+            padding-left: 5px;
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #999;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-contact i {
+            color: var(--or);
+            width: 20px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            font-size: 1.5rem;
+            color: #666;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .container { padding: 0 3rem; }
+            .collection-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 2rem; }
+            .nav-links { display: none; }
+            .collection-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast notification -->
+    <div class="toast-notification" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Produit ajouté au panier</span>
+        <a href="/panier">Voir le panier →</a>
+    </div>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container">
+            <i class="fas fa-truck"></i> LIVRAISON OFFERTE DÈS 150€ 
+            <i class="fas fa-circle" style="font-size: 0.3rem; margin: 0 1rem;"></i>
+            <i class="fas fa-gem"></i> ÉCHANTILLONS OFFERTS
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container header-inner">
+            <div class="logo-container">
+                <div class="logo-maison">MAISON</div>
+                <div class="logo">
+                    AURA<span>.</span>
+                </div>
+                <div class="logo-since">Depuis 1925</div>
+            </div>
+            <div class="nav-links">
+                <a href="/">Accueil</a>
+                <a href="/collection">Collection</a>
+                <a href="/histoire">Histoire</a>
+                <a href="/contact">Contact</a>
+            </div>
+            <div class="header-icons">
+                <i class="far fa-heart"></i>
+                <i class="far fa-user"></i>
+                <i class="fas fa-search"></i>
+                <a href="/panier" class="cart-icon-container" style="color: inherit;">
+                    <i class="fas fa-shopping-bag"></i>
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge" id="cart-badge">{{ cart_count }}</span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- HEADER COLLECTION -->
+        <div class="collection-header" data-aos="fade-up">
+            <h1 class="collection-title"><span>La Collection</span></h1>
+            <p class="collection-desc">
+                Découvrez l'intégralité de nos créations, chaque parfum raconte une histoire unique,
+                chaque flacon est une pièce d'exception.
+            </p>
+        </div>
+
+        <!-- FILTRES -->
+        <div class="filters" data-aos="fade-up" data-aos-delay="100">
+            <button class="filter-btn active" onclick="filterProducts('all')">Tous</button>
+            <button class="filter-btn" onclick="filterProducts('nouveau')">Nouveautés</button>
+            <button class="filter-btn" onclick="filterProducts('promo')">Promotions</button>
+            <button class="filter-btn" onclick="filterProducts('feminin')">Féminins</button>
+            <button class="filter-btn" onclick="filterProducts('masculin')">Masculins</button>
+            <button class="filter-btn" onclick="filterProducts('meilleure_vente')">Meilleures ventes</button>
+        </div>
+
+        <!-- GRILLE PRODUITS -->
+        <div class="collection-grid" id="productsGrid">
+            {% for id, parfum in parfums.items() %}
+            <div class="product-card" 
+                 data-aos="fade-up" 
+                 data-aos-delay="{{ loop.index * 50 }}"
+                 data-category="{% if parfum.nouveau %}nouveau {% endif %}{% if parfum.en_promo %}promo {% endif %}{% if parfum.meilleure_vente %}meilleure_vente {% endif %}{{ parfum.genre|lower }}">
+                
+                <!-- Badges -->
+                <div class="product-badges">
+                    {% if parfum.nouveau %}
+                    <span class="badge badge-nouveau">Nouveau</span>
+                    {% endif %}
+                    {% if parfum.en_promo %}
+                    <span class="badge badge-promo">-{{ ((parfum.prix - parfum.prix_promo) / parfum.prix * 100)|round|int }}%</span>
+                    {% endif %}
+                    {% if parfum.meilleure_vente %}
+                    <span class="badge badge-meilleure-vente">Meilleure vente</span>
+                    {% endif %}
+                    {% if parfum.coup_de_coeur %}
+                    <span class="badge badge-coup-coeur">Coup de cœur</span>
+                    {% endif %}
+                </div>
+
+                <!-- Image et actions -->
+                <div class="product-image">
+                    <img src="/static/{{ parfum.image_principale }}" alt="{{ parfum.nom }}">
+                    <div class="product-actions">
+                        <a href="/parfum/{{ id }}" class="btn-product-action">
+                            <span>Voir détails</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <button onclick="ajouterAuPanier('{{ id }}', event)" class="btn-product-action btn-add-to-cart">
+                            <span><i class="fas fa-shopping-cart"></i> Ajouter au panier</span>
+                            <span>{{ parfum.prix_promo if parfum.en_promo else parfum.prix }}€</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Informations -->
+                <div class="product-info">
+                    <div class="product-category">{{ parfum.famille.split('·')[0] }}</div>
+                    <h3>{{ parfum.nom }}</h3>
+                    <div class="product-price">
+                        {% if parfum.en_promo %}
+                        <span class="old-price">{{ parfum.prix }}€</span>
+                        <span class="current-price">{{ parfum.prix_promo }}€</span>
+                        {% else %}
+                        <span class="current-price">{{ parfum.prix }}€</span>
+                        {% endif %}
+                    </div>
+                    <div class="product-rating">
+                        {% for i in range(5) %}
+                            {% if i < parfum.notes_moyenne|int %}
+                            <i class="fas fa-star"></i>
+                            {% elif i < parfum.notes_moyenne %}
+                            <i class="fas fa-star-half-alt"></i>
+                            {% else %}
+                            <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span>({{ parfum.nb_avis }} avis)</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Bouton WhatsApp -->
+        <div style="text-align: center; margin: 4rem 0;">
+            <a href="https://wa.me/33752771701?text=Bonjour%20Aura%2C%20je%20souhaite%20des%20informations%20sur%20votre%20collection" 
+               class="btn-wa" target="_blank">
+               <i class="fab fa-whatsapp"></i> Conseiller personnel
+            </a>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">AURA<span>.</span></div>
+                    <p>
+                        Maison de parfumerie française depuis 1925, créatrice de parfums d'exception 
+                        alliant savoir-faire artisanal et ingrédients rares.
+                    </p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Collection</h4>
+                    <ul>
+                        <li><a href="/parfum/rose-absolue">Bouquet ABSOLU</a></li>
+                        <li><a href="/parfum/cuir-russie">Tobacco Vanille</a></li>
+                        <li><a href="/parfum/bois-encens">Bakara</a></li>
+                        <li><a href="/parfum/iris-poudre">Féroce Intense</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Informations</h4>
+                    <ul>
+                        <li><a href="/histoire">Notre histoire</a></li>
+                        <li><a href="#">Livraison</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">CGV</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> 12 Rue de la Paix, 75002 Paris</p>
+                    <p><i class="fas fa-phone"></i> +33 1 42 61 12 34</p>
+                    <p><i class="fab fa-whatsapp"></i> 07 52 71 77 01</p>
+                    <p><i class="far fa-envelope"></i> contact@aura-parfums.fr</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>© 2025 AURA Parfums. Tous droits réservés. Made in France.</div>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialisation AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 50
+        });
+
+        // Fonction pour afficher le toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Fonction pour mettre à jour le badge du panier
+        function updateCartBadge(count) {
+            const badge = document.getElementById('cart-badge');
+            const cartIcon = document.querySelector('.cart-icon-container');
+            
+            if (count > 0) {
+                if (badge) {
+                    badge.textContent = count;
+                } else {
+                    const newBadge = document.createElement('span');
+                    newBadge.className = 'cart-badge';
+                    newBadge.id = 'cart-badge';
+                    newBadge.textContent = count;
+                    cartIcon.appendChild(newBadge);
+                }
+            } else {
+                if (badge) {
+                    badge.remove();
+                }
+            }
+        }
+
+        // Fonction pour ajouter au panier
+        async function ajouterAuPanier(produitId, event) {
+            event.stopPropagation(); // Empêche la propagation du clic
+            
+            try {
+                const response = await fetch('/ajouter-au-panier', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: produitId,
+                        quantite: 1
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    updateCartBadge(data.cart_count);
+                    showToast('✅ Produit ajouté au panier !');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showToast('❌ Erreur lors de l\'ajout au panier');
+            }
+        }
+
+        // Fonction de filtrage
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            products.forEach(product => {
+                if (category === 'all') {
+                    product.style.display = 'block';
+                } else {
+                    const categories = product.dataset.category;
+                    if (categories && categories.includes(category)) {
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Empêcher la propagation du clic sur les boutons d'action
+        document.querySelectorAll('.btn-product-action').forEach(btn => {
+            btn.addEventListener('click', (e) => e.stopPropagation());
+        });
+    </script>
+</body>
+</html>

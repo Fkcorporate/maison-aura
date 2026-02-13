@@ -1,0 +1,258 @@
+{# templates/contact.html - Contact et boutique #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA · Contact & Boutique</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --or: #c5a267;
+            --or-fonce: #a67c4f;
+            --beige: #fcfaf7;
+            --noir-profond: #1a1a1a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--beige);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        
+        .top-bar { background: var(--noir-profond); color: var(--or); padding: 0.5rem 0; text-align: center; }
+        header {
+            position: sticky; top: 0; background: rgba(252,250,247,0.92);
+            backdrop-filter: blur(12px); border-bottom: 1px solid rgba(197,162,103,0.2);
+            padding: 1rem 0;
+        }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo {
+            font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;
+            letter-spacing: 8px; text-transform: uppercase;
+        }
+        .logo span { color: var(--or-fonce); font-size: 3rem; }
+        .nav-links { display: flex; gap: 3rem; }
+        .nav-links a {
+            text-decoration: none; color: var(--noir-profond); font-size: 0.9rem;
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin: 5rem 0;
+        }
+        .contact-info {
+            background: white;
+            padding: 3rem;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
+        }
+        .contact-info h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+        .info-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .info-item i {
+            font-size: 1.5rem;
+            color: var(--or);
+            width: 30px;
+        }
+        .info-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+        .info-item p {
+            color: #666;
+        }
+
+        .map {
+            height: 450px;
+            background: #eee;
+            margin: 3rem 0;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 3rem;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        .submit-btn {
+            background: var(--or-fonce);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .submit-btn:hover {
+            background: var(--noir-profond);
+        }
+
+        .whatsapp-section {
+            text-align: center;
+            margin: 4rem 0;
+        }
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 1.5rem 4rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        .whatsapp-btn:hover {
+            background: #20b859;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <i class="fas fa-truck"></i> LIVRAISON OFFERTE DÈS 150€
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-inner">
+            <div class="logo">AURA<span>.</span></div>
+            <div class="nav-links">
+                <a href="/">Accueil</a>
+                <a href="/collection">Collection</a>
+                <a href="/histoire">Histoire</a>
+                <a href="/contact">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div style="text-align: center; margin: 4rem 0;">
+            <h1 style="font-size: 3rem; font-weight: 300;">Contactez-nous</h1>
+            <p style="color: #666; margin-top: 1rem;">Notre équipe reste à votre disposition pour toute question</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h2>Boutique & Atelier</h2>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h3>Adresse</h3>
+                        <p>12 Rue de la Paix<br>75002 Paris, France</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h3>Téléphone</h3>
+                        <p>+33 1 42 61 12 34</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <div>
+                        <h3>WhatsApp</h3>
+                        <p>07 52 71 77 01</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="far fa-envelope"></i>
+                    <div>
+                        <h3>Email</h3>
+                        <p>contact@aura-parfums.fr</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="far fa-clock"></i>
+                    <div>
+                        <h3>Horaires</h3>
+                        <p>Lundi au Samedi : 10h - 19h<br>Dimanche : Fermé</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h2 style="margin-bottom: 2rem;">Envoyez-nous un message</h2>
+                <form onsubmit="handleContact(event)">
+                    <div class="form-group">
+                        <input type="text" placeholder="Nom complet" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="Téléphone (optionnel)">
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Votre message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Envoyer</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.874102318142!2d2.330391515674362!3d48.8686084792889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2f06e2b70f%3A0x40b82c3688c9460!2s12%20Rue%20de%20la%20Paix%2C%2075002%20Paris!5e0!3m2!1sfr!2sfr!4v1647889012345!5m2!1sfr!2sfr" 
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+
+        <div class="whatsapp-section">
+            <h2 style="margin-bottom: 2rem;">Commande express par WhatsApp</h2>
+            <a href="https://wa.me/33752771701" class="whatsapp-btn" target="_blank">
+                <i class="fab fa-whatsapp fa-2x"></i>
+                <span>07 52 71 77 01</span>
+            </a>
+            <p style="margin-top: 1rem; color: #666;">Réponse sous 24h · 7j/7</p>
+        </div>
+    </main>
+
+    <footer style="background: var(--noir-profond); color: white; padding: 3rem 0; margin-top: 4rem; text-align: center;">
+        <p>© 2025 AURA Parfums. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        function handleContact(e) {
+            e.preventDefault();
+            alert('Merci pour votre message. Nous vous répondrons dans les plus brefs délais.');
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>
