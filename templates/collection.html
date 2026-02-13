@@ -1,23 +1,22 @@
-{# templates/collection.html - Toute la collection avec panier #}
+{# templates/produit.html - Page fiche produit détaillée luxe avec panier #}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA · Toute la collection</title>
+    <title>AURA · {{ parfum.nom }} | Parfum d'exception</title>
     
     <!-- SEO -->
-    <meta name="description" content="Découvrez l'intégralité de la collection AURA : parfums d'exception, créations uniques alliant savoir-faire artisanal et ingrédients rares.">
-    <meta name="keywords" content="parfum luxe, collection parfums, bouquet absolu, tobacco vanille, bakara, féroce intense">
+    <meta name="description" content="{{ parfum.description_courte }}">
+    <meta property="og:title" content="AURA · {{ parfum.nom }}">
+    <meta property="og:description" content="{{ parfum.description_courte }}">
+    <meta property="og:image" content="/static/{{ parfum.image_principale }}">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <!-- AOS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
         :root {
@@ -28,9 +27,6 @@
             --noir-doux: #2b2b2b;
             --beige: #fcfaf7;
             --beige-fonce: #f5f0e9;
-            --ombre-subtile: 0 20px 40px -15px rgba(0,0,0,0.15);
-            --ombre-luxe: 0 30px 60px -20px rgba(0,0,0,0.25);
-            --transition-luxe: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         * {
@@ -41,7 +37,6 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            font-weight: 300;
             background: var(--beige);
             color: var(--noir-doux);
             line-height: 1.6;
@@ -66,7 +61,6 @@
             padding: 0.5rem 0;
             font-size: 0.8rem;
             text-align: center;
-            letter-spacing: 1px;
         }
 
         .top-bar i {
@@ -110,6 +104,7 @@
         .logo {
             font-family: 'Cormorant Garamond', serif;
             font-size: 2.5rem;
+            font-weight: 400;
             letter-spacing: 8px;
             text-transform: uppercase;
             color: var(--noir-profond);
@@ -117,15 +112,17 @@
         }
 
         .logo span {
+            font-weight: 700;
+            font-style: italic;
             color: var(--or-fonce);
             font-size: 3rem;
-            font-style: italic;
         }
 
         .logo-since {
             font-size: 0.7rem;
             letter-spacing: 3px;
             color: var(--or-fonce);
+            text-transform: uppercase;
             margin-top: -5px;
         }
 
@@ -140,7 +137,8 @@
             font-size: 0.9rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            transition: var(--transition-luxe);
+            font-weight: 400;
+            transition: all 0.3s;
             position: relative;
             padding-bottom: 5px;
         }
@@ -153,7 +151,7 @@
             width: 0;
             height: 1px;
             background: var(--or-fonce);
-            transition: var(--transition-luxe);
+            transition: all 0.3s;
         }
 
         .nav-links a:hover {
@@ -174,7 +172,7 @@
 
         .header-icons i {
             cursor: pointer;
-            transition: var(--transition-luxe);
+            transition: all 0.3s;
         }
 
         .header-icons i:hover {
@@ -211,240 +209,427 @@
             100% { transform: scale(1); }
         }
 
-        /* ===== HEADER COLLECTION ===== */
-        .collection-header {
-            text-align: center;
-            margin: 4rem 0;
-        }
-
-        .collection-title {
-            font-size: 3.5rem;
-            font-weight: 300;
-            margin-bottom: 1rem;
-            color: var(--noir-profond);
-        }
-
-        .collection-title span {
-            border-bottom: 2px solid var(--or);
-            padding-bottom: 8px;
-        }
-
-        .collection-desc {
-            max-width: 700px;
-            margin: 0 auto;
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        /* ===== FILTRES ===== */
-        .filters {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: 3rem 0;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            background: none;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            font-size: 0.9rem;
+        /* Fil d'Ariane */
+        .breadcrumb {
+            margin: 2rem 0;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 2px;
+        }
+        .breadcrumb a {
             color: #999;
-            cursor: pointer;
-            transition: var(--transition-luxe);
-            border-bottom: 2px solid transparent;
-            font-weight: 400;
+            text-decoration: none;
         }
-
-        .filter-btn:hover, .filter-btn.active {
+        .breadcrumb a:hover {
             color: var(--or-fonce);
-            border-bottom-color: var(--or-fonce);
+        }
+        .breadcrumb span {
+            color: var(--noir-doux);
         }
 
-        /* ===== GRILLE PRODUITS ===== */
-        .collection-grid {
+        /* ===== PRODUIT ===== */
+        .product-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
             margin: 3rem 0 5rem;
         }
 
-        .product-card {
-            background: white;
+        /* Galerie */
+        .gallery {
             position: relative;
-            overflow: hidden;
-            box-shadow: var(--ombre-subtile);
-            transition: var(--transition-luxe);
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
         }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--ombre-luxe);
+        .main-image {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.2);
+        }
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .thumbnail {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+        .thumbnail:hover, .thumbnail.active {
+            opacity: 1;
+            border: 2px solid var(--or);
         }
 
         .product-badges {
             position: absolute;
             top: 20px;
             left: 20px;
-            z-index: 10;
             display: flex;
             gap: 10px;
+            z-index: 10;
         }
-
         .badge {
             padding: 0.5rem 1rem;
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-weight: 500;
             border-radius: 2px;
         }
-
         .badge-nouveau {
             background: var(--or);
             color: var(--noir-profond);
         }
-
         .badge-promo {
             background: #d44e4e;
             color: white;
         }
-
-        .badge-meilleure-vente {
+        .badge-exclusif {
             background: var(--noir-profond);
             color: var(--or);
         }
 
-        .badge-coup-coeur {
-            background: #c5a267;
-            color: var(--noir-profond);
-        }
-
-        .product-image {
-            height: 350px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.8s ease;
-        }
-
-        .product-card:hover .product-image img {
-            transform: scale(1.05);
-        }
-
-        .product-actions {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            padding: 2rem 1.5rem 1.5rem;
-            transform: translateY(100%);
-            transition: var(--transition-luxe);
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .product-card:hover .product-actions {
-            transform: translateY(0);
-        }
-
-        .btn-product-action {
-            width: 100%;
-            padding: 1rem;
-            background: white;
-            color: var(--noir-profond);
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition-luxe);
-        }
-
-        .btn-product-action:hover {
-            background: var(--or);
-            color: white;
-        }
-
-        .btn-add-to-cart {
-            background: var(--or-fonce);
-            color: white;
-            border: none;
-        }
-
-        .btn-add-to-cart:hover {
-            background: var(--noir-profond);
-        }
-
-        .product-info {
-            padding: 2rem 1.5rem;
-            background: white;
-        }
-
+        /* Infos produit */
         .product-category {
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             color: var(--or-fonce);
             margin-bottom: 0.5rem;
         }
-
-        .product-info h3 {
-            font-size: 1.8rem;
-            font-weight: 400;
-            margin-bottom: 0.5rem;
+        .product-title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            line-height: 1.2;
         }
-
-        .product-price {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .current-price {
-            font-size: 1.5rem;
-            font-family: 'Cormorant Garamond', serif;
-            color: var(--noir-profond);
-        }
-
-        .old-price {
-            font-size: 1.1rem;
-            text-decoration: line-through;
-            color: #999;
-        }
-
         .product-rating {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stars {
             color: var(--or);
+        }
+        .rating-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .product-price-box {
+            background: var(--beige-fonce);
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid var(--or-clair);
+        }
+        .price-row {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .current-price {
+            font-size: 2.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--noir-profond);
+        }
+        .old-price {
+            font-size: 1.5rem;
+            text-decoration: line-through;
+            color: #999;
+        }
+        .discount {
+            background: #d44e4e;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 2px;
             font-size: 0.8rem;
         }
-
-        .product-rating span {
+        .stock-info {
+            margin-top: 1rem;
             color: #666;
+            font-size: 0.9rem;
+        }
+        .stock-info i {
+            color: var(--or);
+            margin-right: 0.5rem;
         }
 
-        /* ===== TOAST NOTIFICATION ===== */
+        .product-description {
+            margin: 2rem 0;
+            line-height: 1.8;
+            color: #4a4a4a;
+        }
+
+        /* Boutons d'action */
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .btn-add-to-cart {
+            flex: 1;
+            padding: 1.2rem;
+            background: var(--noir-profond);
+            color: white;
+            border: 1px solid var(--noir-profond);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add-to-cart:hover {
+            background: transparent;
+            color: var(--noir-profond);
+        }
+
+        .btn-wa {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 1.2rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-wa:hover {
+            background: #20b859;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-wa i {
+            font-size: 1.2rem;
+        }
+
+        .product-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+            padding: 2rem 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #666;
+        }
+        .meta-item i {
+            color: var(--or);
+            width: 20px;
+        }
+
+        /* Sélecteur de quantité */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .quantity-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+        }
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .quantity-btn:hover {
+            background: var(--or-clair);
+        }
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        /* Fiche technique */
+        .technical-sheet {
+            background: white;
+            padding: 3rem;
+            margin: 4rem 0;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
+        }
+        .sheet-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .sheet-title span {
+            border-bottom: 2px solid var(--or);
+            padding-bottom: 8px;
+        }
+
+        .notes-pyramid {
+            display: flex;
+            justify-content: space-around;
+            margin: 3rem 0;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .note {
+            flex: 1;
+            min-width: 200px;
+        }
+        .note-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--or-fonce);
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+        .note-value {
+            font-size: 1.2rem;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        .spec-item {
+            text-align: center;
+        }
+        .spec-label {
+            font-size: 0.8rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .spec-value {
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Avis clients */
+        .reviews-section {
+            margin: 4rem 0;
+        }
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .average-rating {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .big-rating {
+            font-size: 3rem;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--or-fonce);
+        }
+        .review-card {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 1rem;
+            border: 1px solid #eee;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .review-author {
+            font-weight: 600;
+        }
+        .review-date {
+            color: #999;
+            font-size: 0.8rem;
+        }
+        .no-reviews {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Produits similaires */
+        .similar-products {
+            margin: 5rem 0;
+        }
+        .similar-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .similar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .similar-card {
+            background: white;
+            padding: 1rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .similar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.15);
+        }
+        .similar-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .similar-card h4 {
+            font-size: 1.3rem;
+            margin: 1rem 0;
+        }
+        .similar-price {
+            color: var(--or-fonce);
+            font-size: 1.2rem;
+        }
+
+        /* Toast notification */
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -453,7 +638,7 @@
             color: white;
             padding: 1rem 2rem;
             border-radius: 50px;
-            box-shadow: var(--ombre-luxe);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -479,111 +664,66 @@
             font-weight: 600;
         }
 
-        /* ===== BOUTON WHATSAPP ===== */
-        .btn-wa {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            background: #25D366;
-            color: white;
-            text-decoration: none;
-            padding: 1.2rem 3rem;
-            font-size: 1.1rem;
-            font-weight: 500;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            border: none;
-            border-radius: 50px;
-            box-shadow: 0 8px 16px -6px rgba(37, 211, 102, 0.4);
-            transition: var(--transition-luxe);
-            margin: 2rem auto;
-        }
-
-        .btn-wa i {
-            font-size: 1.5rem;
-        }
-
-        .btn-wa:hover {
-            background: #20b859;
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px -8px rgba(37, 211, 102, 0.6);
-        }
-
-        /* ===== FOOTER ===== */
+        /* Footer */
         footer {
             background: var(--noir-profond);
             color: var(--beige);
             padding: 4rem 0 2rem;
-            margin-top: 4rem;
+            margin-top: 5rem;
         }
-
         .footer-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1.5fr;
             gap: 3rem;
-            margin-bottom: 3rem;
         }
-
         .footer-logo {
             font-family: 'Cormorant Garamond', serif;
             font-size: 2rem;
             letter-spacing: 4px;
             margin-bottom: 1rem;
         }
-
         .footer-logo span {
             color: var(--or);
         }
-
         .footer-about p {
             color: #999;
             margin: 1.5rem 0;
             font-size: 0.9rem;
         }
-
         .social-links {
             display: flex;
             gap: 1.5rem;
         }
-
         .social-links a {
             color: var(--or-clair);
             font-size: 1.2rem;
-            transition: var(--transition-luxe);
+            transition: all 0.3s;
         }
-
         .social-links a:hover {
             color: var(--or);
             transform: translateY(-3px);
         }
-
         .footer-column h4 {
             font-size: 1.2rem;
             margin-bottom: 1.5rem;
             color: var(--or);
         }
-
         .footer-column ul {
             list-style: none;
         }
-
         .footer-column ul li {
             margin-bottom: 0.8rem;
         }
-
         .footer-column ul li a {
             color: #999;
             text-decoration: none;
-            transition: var(--transition-luxe);
+            transition: all 0.3s;
             font-size: 0.9rem;
         }
-
         .footer-column ul li a:hover {
             color: var(--or);
             padding-left: 5px;
         }
-
         .footer-contact p {
             display: flex;
             align-items: center;
@@ -592,15 +732,14 @@
             margin-bottom: 1rem;
             font-size: 0.9rem;
         }
-
         .footer-contact i {
             color: var(--or);
             width: 20px;
         }
-
         .footer-bottom {
             border-top: 1px solid #333;
             padding-top: 2rem;
+            margin-top: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -609,7 +748,6 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-
         .payment-methods {
             display: flex;
             gap: 1rem;
@@ -617,18 +755,31 @@
             color: #666;
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1200px) {
-            .container { padding: 0 3rem; }
-            .collection-grid {
+        /* Responsive */
+        @media (max-width: 968px) {
+            .container { padding: 0 2rem; }
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+            .similar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .specs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .footer-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        @media (max-width: 768px) {
-            .container { padding: 0 2rem; }
-            .nav-links { display: none; }
-            .collection-grid {
+        @media (max-width: 568px) {
+            .product-actions {
+                flex-direction: column;
+            }
+            .similar-grid {
+                grid-template-columns: 1fr;
+            }
+            .specs-grid {
                 grid-template-columns: 1fr;
             }
             .footer-grid {
@@ -649,7 +800,6 @@
         <a href="/panier">Voir le panier →</a>
     </div>
 
-    <!-- TOP BAR -->
     <div class="top-bar">
         <div class="container">
             <i class="fas fa-truck"></i> LIVRAISON OFFERTE DÈS 150€ 
@@ -658,7 +808,6 @@
         </div>
     </div>
 
-    <!-- HEADER -->
     <header>
         <div class="container header-inner">
             <div class="logo-container">
@@ -689,34 +838,15 @@
     </header>
 
     <main class="container">
-        <!-- HEADER COLLECTION -->
-        <div class="collection-header" data-aos="fade-up">
-            <h1 class="collection-title"><span>La Collection</span></h1>
-            <p class="collection-desc">
-                Découvrez l'intégralité de nos créations, chaque parfum raconte une histoire unique,
-                chaque flacon est une pièce d'exception.
-            </p>
+        <!-- Fil d'Ariane -->
+        <div class="breadcrumb">
+            <a href="/">Accueil</a> / <a href="/collection">Collection</a> / <span>{{ parfum.nom }}</span>
         </div>
 
-        <!-- FILTRES -->
-        <div class="filters" data-aos="fade-up" data-aos-delay="100">
-            <button class="filter-btn active" onclick="filterProducts('all')">Tous</button>
-            <button class="filter-btn" onclick="filterProducts('nouveau')">Nouveautés</button>
-            <button class="filter-btn" onclick="filterProducts('promo')">Promotions</button>
-            <button class="filter-btn" onclick="filterProducts('feminin')">Féminins</button>
-            <button class="filter-btn" onclick="filterProducts('masculin')">Masculins</button>
-            <button class="filter-btn" onclick="filterProducts('meilleure_vente')">Meilleures ventes</button>
-        </div>
-
-        <!-- GRILLE PRODUITS -->
-        <div class="collection-grid" id="productsGrid">
-            {% for id, parfum in parfums.items() %}
-            <div class="product-card" 
-                 data-aos="fade-up" 
-                 data-aos-delay="{{ loop.index * 50 }}"
-                 data-category="{% if parfum.nouveau %}nouveau {% endif %}{% if parfum.en_promo %}promo {% endif %}{% if parfum.meilleure_vente %}meilleure_vente {% endif %}{{ parfum.genre|lower }}">
-                
-                <!-- Badges -->
+        <!-- Produit -->
+        <div class="product-container">
+            <!-- Galerie -->
+            <div class="gallery">
                 <div class="product-badges">
                     {% if parfum.nouveau %}
                     <span class="badge badge-nouveau">Nouveau</span>
@@ -724,42 +854,37 @@
                     {% if parfum.en_promo %}
                     <span class="badge badge-promo">-{{ ((parfum.prix - parfum.prix_promo) / parfum.prix * 100)|round|int }}%</span>
                     {% endif %}
-                    {% if parfum.meilleure_vente %}
-                    <span class="badge badge-meilleure-vente">Meilleure vente</span>
-                    {% endif %}
-                    {% if parfum.coup_de_coeur %}
-                    <span class="badge badge-coup-coeur">Coup de cœur</span>
+                    {% if parfum.collection_limitée %}
+                    <span class="badge badge-exclusif">Édition limitée</span>
                     {% endif %}
                 </div>
-
-                <!-- Image et actions -->
-                <div class="product-image">
-                    <img src="/static/{{ parfum.image_principale }}" alt="{{ parfum.nom }}">
-                    <div class="product-actions">
-                        <a href="/parfum/{{ id }}" class="btn-product-action">
-                            <span>Voir détails</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                        <button onclick="ajouterAuPanier('{{ id }}', event)" class="btn-product-action btn-add-to-cart">
-                            <span><i class="fas fa-shopping-cart"></i> Ajouter au panier</span>
-                            <span>{{ parfum.prix_promo if parfum.en_promo else parfum.prix }}€</span>
-                        </button>
-                    </div>
+                
+                <img src="/static/{{ parfum.image_principale }}" alt="{{ parfum.nom }}" class="main-image" id="mainImage">
+                
+                <div class="thumbnail-grid">
+                    <img src="/static/{{ parfum.image_principale }}" alt="" class="thumbnail active" onclick="changeImage(this.src)">
+                    {% if parfum.image_secondaire %}
+                    <img src="/static/{{ parfum.image_secondaire }}" alt="" class="thumbnail" onclick="changeImage(this.src)">
+                    {% endif %}
+                    {% if parfum.image_flacon %}
+                    <img src="/static/{{ parfum.image_flacon }}" alt="" class="thumbnail" onclick="changeImage(this.src)">
+                    {% endif %}
+                    {% if parfum.image_emballage %}
+                    <img src="/static/{{ parfum.image_emballage }}" alt="" class="thumbnail" onclick="changeImage(this.src)">
+                    {% endif %}
+                    {% if parfum.image_2 %}
+                    <img src="/static/{{ parfum.image_2 }}" alt="" class="thumbnail" onclick="changeImage(this.src)">
+                    {% endif %}
                 </div>
+            </div>
 
-                <!-- Informations -->
-                <div class="product-info">
-                    <div class="product-category">{{ parfum.famille.split('·')[0] }}</div>
-                    <h3>{{ parfum.nom }}</h3>
-                    <div class="product-price">
-                        {% if parfum.en_promo %}
-                        <span class="old-price">{{ parfum.prix }}€</span>
-                        <span class="current-price">{{ parfum.prix_promo }}€</span>
-                        {% else %}
-                        <span class="current-price">{{ parfum.prix }}€</span>
-                        {% endif %}
-                    </div>
-                    <div class="product-rating">
+            <!-- Infos -->
+            <div class="product-info">
+                <div class="product-category">{{ parfum.famille }}</div>
+                <h1 class="product-title">{{ parfum.nom }}</h1>
+                
+                <div class="product-rating">
+                    <div class="stars">
                         {% for i in range(5) %}
                             {% if i < parfum.notes_moyenne|int %}
                             <i class="fas fa-star"></i>
@@ -769,32 +894,211 @@
                             <i class="far fa-star"></i>
                             {% endif %}
                         {% endfor %}
-                        <span>({{ parfum.nb_avis }} avis)</span>
+                    </div>
+                    <div class="rating-text">{{ parfum.notes_moyenne }}/5 · {{ parfum.nb_avis }} avis</div>
+                </div>
+
+                <div class="product-price-box">
+                    <div class="price-row">
+                        {% if parfum.en_promo %}
+                        <span class="old-price">{{ parfum.prix }}€</span>
+                        <span class="current-price">{{ parfum.prix_promo }}€</span>
+                        <span class="discount">-{{ ((parfum.prix - parfum.prix_promo) / parfum.prix * 100)|round|int }}%</span>
+                        {% else %}
+                        <span class="current-price">{{ parfum.prix }}€</span>
+                        {% endif %}
+                    </div>
+                    <div class="stock-info">
+                        <i class="fas fa-check-circle"></i>
+                        {% if parfum.stock > 10 %}
+                        En stock · Livraison 24/48h
+                        {% elif parfum.stock > 0 %}
+                        Plus que {{ parfum.stock }} exemplaires
+                        {% else %}
+                        Rupture temporaire
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="product-description">
+                    <p>{{ parfum.description_longue }}</p>
+                </div>
+
+                <!-- Sélecteur de quantité -->
+                <div class="quantity-selector">
+                    <span class="quantity-label">Quantité :</span>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                        <input type="text" class="quantity-input" id="quantite" value="1" readonly>
+                        <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="product-actions">
+                    <button onclick="ajouterAuPanier('{{ parfum.id }}')" class="btn-add-to-cart">
+                        <i class="fas fa-shopping-cart"></i> Ajouter au panier
+                    </button>
+                    <a href="https://wa.me/33752771701?text=Bonjour%20Aura%2C%20je%20souhaite%20commander%20{{ parfum.nom|replace(' ', '%20') }}%20({{ parfum.prix }}€)" 
+                       class="btn-wa" target="_blank">
+                       <i class="fab fa-whatsapp"></i> Acheter maintenant
+                    </a>
+                </div>
+
+                <div class="product-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-flask"></i>
+                        <div>
+                            <div style="font-size: 0.7rem; color: #999;">Concentration</div>
+                            <div>{{ parfum.concentration }}</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-ruler"></i>
+                        <div>
+                            <div style="font-size: 0.7rem; color: #999;">Volume</div>
+                            <div>{{ parfum.volume }}</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <div style="font-size: 0.7rem; color: #999;">Tenue</div>
+                            <div>{{ parfum.tenue }}</div>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <div style="font-size: 0.7rem; color: #999;">Création</div>
+                            <div>{{ parfum.annee_creation }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
 
-        <!-- Bouton WhatsApp -->
-        <div style="text-align: center; margin: 4rem 0;">
-            <a href="https://wa.me/33752771701?text=Bonjour%20Aura%2C%20je%20souhaite%20des%20informations%20sur%20votre%20collection" 
-               class="btn-wa" target="_blank">
-               <i class="fab fa-whatsapp"></i> Conseiller personnel
-            </a>
+        <!-- Fiche technique -->
+        <div class="technical-sheet">
+            <h2 class="sheet-title"><span>Fiche technique</span></h2>
+            
+            <div class="notes-pyramid">
+                <div class="note">
+                    <div class="note-label">Tête</div>
+                    <div class="note-value">{{ parfum.notes.tete|join(' · ') }}</div>
+                </div>
+                <div class="note">
+                    <div class="note-label">Cœur</div>
+                    <div class="note-value">{{ parfum.notes.coeur|join(' · ') }}</div>
+                </div>
+                <div class="note">
+                    <div class="note-label">Fond</div>
+                    <div class="note-value">{{ parfum.notes.fond|join(' · ') }}</div>
+                </div>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-label">Famille olfactive</div>
+                    <div class="spec-value">{{ parfum.famille }}</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Nez créateur</div>
+                    <div class="spec-value">{{ parfum.nez }}</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Collection</div>
+                    <div class="spec-value">{{ parfum.collection }}</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Saison</div>
+                    <div class="spec-value">{{ parfum.saison }}</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Genre</div>
+                    <div class="spec-value">{{ parfum.genre }}</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Origine</div>
+                    <div class="spec-value">{{ parfum.origine_ingredients }}</div>
+                </div>
+            </div>
         </div>
+
+        <!-- Avis clients -->
+        <div class="reviews-section">
+            <div class="reviews-header">
+                <h2 style="font-size: 2rem;">Avis clients</h2>
+                <div class="average-rating">
+                    <div class="big-rating">{{ parfum.notes_moyenne }}</div>
+                    <div>
+                        <div class="stars">
+                            {% for i in range(5) %}
+                                {% if i < parfum.notes_moyenne|int %}
+                                <i class="fas fa-star"></i>
+                                {% elif i < parfum.notes_moyenne %}
+                                <i class="fas fa-star-half-alt"></i>
+                                {% else %}
+                                <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div>{{ parfum.nb_avis }} avis vérifiés</div>
+                    </div>
+                </div>
+            </div>
+
+            {# Vérification si 'avis' existe #}
+            {% if parfum.avis and parfum.avis|length > 0 %}
+                {% for avis in parfum.avis[:3] %}
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="review-author">{{ avis.auteur }}</span>
+                        <span class="review-date">{{ avis.date }}</span>
+                    </div>
+                    <div class="stars" style="margin-bottom: 0.5rem;">
+                        {% for i in range(5) %}
+                            {% if i < avis.note %}
+                            <i class="fas fa-star"></i>
+                            {% else %}
+                            <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <p>"{{ avis.commentaire }}"</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-reviews">
+                    <i class="far fa-star" style="font-size: 3rem; color: #ddd; margin-bottom: 1rem;"></i>
+                    <p>Soyez le premier à donner votre avis sur ce parfum.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Produits similaires -->
+        {% if similaires %}
+        <div class="similar-products">
+            <h2 class="similar-title">Vous aimerez aussi</h2>
+            <div class="similar-grid">
+                {% for id, similaire in similaires.items() %}
+                <a href="/parfum/{{ id }}" class="similar-card">
+                    <img src="/static/{{ similaire.image_principale }}" alt="{{ similaire.nom }}">
+                    <h4>{{ similaire.nom }}</h4>
+                    <div class="similar-price">{{ similaire.prix }}€</div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
     </main>
 
-    <!-- FOOTER -->
     <footer>
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-about">
                     <div class="footer-logo">AURA<span>.</span></div>
-                    <p>
-                        Maison de parfumerie française depuis 1925, créatrice de parfums d'exception 
-                        alliant savoir-faire artisanal et ingrédients rares.
-                    </p>
+                    <p>Maison de parfumerie française depuis 1925</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -813,22 +1117,18 @@
                 <div class="footer-column">
                     <h4>Informations</h4>
                     <ul>
-                        <li><a href="/histoire">Notre histoire</a></li>
-                        <li><a href="#">Livraison</a></li>
-                        <li><a href="#">Mentions légales</a></li>
-                        <li><a href="#">CGV</a></li>
+                        <li><a href="/histoire">Histoire</a></li>
+                        <li><a href="/contact">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
                     <h4>Contact</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> 12 Rue de la Paix, 75002 Paris</p>
                     <p><i class="fas fa-phone"></i> +33 1 42 61 12 34</p>
                     <p><i class="fab fa-whatsapp"></i> 07 52 71 77 01</p>
-                    <p><i class="far fa-envelope"></i> contact@aura-parfums.fr</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <div>© 2025 AURA Parfums. Tous droits réservés. Made in France.</div>
+                <div>© 2025 AURA Parfums. Tous droits réservés.</div>
                 <div class="payment-methods">
                     <i class="fab fa-cc-visa"></i>
                     <i class="fab fa-cc-mastercard"></i>
@@ -839,15 +1139,25 @@
         </div>
     </footer>
 
-    <!-- SCRIPTS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Initialisation AOS
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 50
-        });
+        // Variable pour la quantité
+        let quantite = 1;
+
+        function changeImage(src) {
+            document.getElementById('mainImage').src = src;
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+                if(thumb.src === src) thumb.classList.add('active');
+            });
+        }
+
+        function changeQuantity(delta) {
+            const newQty = quantite + delta;
+            if (newQty >= 1 && newQty <= 10) {
+                quantite = newQty;
+                document.getElementById('quantite').value = quantite;
+            }
+        }
 
         // Fonction pour afficher le toast
         function showToast(message) {
@@ -884,9 +1194,7 @@
         }
 
         // Fonction pour ajouter au panier
-        async function ajouterAuPanier(produitId, event) {
-            event.stopPropagation(); // Empêche la propagation du clic
-            
+        async function ajouterAuPanier(produitId) {
             try {
                 const response = await fetch('/ajouter-au-panier', {
                     method: 'POST',
@@ -895,7 +1203,7 @@
                     },
                     body: JSON.stringify({
                         id: produitId,
-                        quantite: 1
+                        quantite: quantite
                     })
                 });
                 
@@ -910,33 +1218,6 @@
                 showToast('❌ Erreur lors de l\'ajout au panier');
             }
         }
-
-        // Fonction de filtrage
-        function filterProducts(category) {
-            const products = document.querySelectorAll('.product-card');
-            const buttons = document.querySelectorAll('.filter-btn');
-            
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            products.forEach(product => {
-                if (category === 'all') {
-                    product.style.display = 'block';
-                } else {
-                    const categories = product.dataset.category;
-                    if (categories && categories.includes(category)) {
-                        product.style.display = 'block';
-                    } else {
-                        product.style.display = 'none';
-                    }
-                }
-            });
-        }
-
-        // Empêcher la propagation du clic sur les boutons d'action
-        document.querySelectorAll('.btn-product-action').forEach(btn => {
-            btn.addEventListener('click', (e) => e.stopPropagation());
-        });
     </script>
 </body>
 </html>
